@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>938</width>
+    <height>649</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_Tags">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="title">
+          <string>Tags</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTreeView" name="View_Documents">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_editor">
+       <attribute name="title">
+        <string>Editor</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_html">
+       <attribute name="title">
+        <string>HTML</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_TeX">
+       <attribute name="title">
+        <string>TeX</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_text">
+       <attribute name="title">
+        <string>Text</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>938</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuNew">
+     <property name="title">
+      <string>New </string>
+     </property>
+     <addaction name="actionNewArticle"/>
+     <addaction name="actionNewDocument"/>
+     <addaction name="separator"/>
+     <addaction name="actionNewImage"/>
+     <addaction name="actionNewAudio"/>
+     <addaction name="actionNewVideo"/>
+     <addaction name="separator"/>
+     <addaction name="actionNewTag"/>
+    </widget>
+    <addaction name="menuNew"/>
+    <addaction name="actionOuvrir_Workspace"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionNewDocument">
+   <property name="text">
+    <string>Document</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionNewTag">
+   <property name="text">
+    <string>Tag</string>
+   </property>
+  </action>
+  <action name="actionNewImage">
+   <property name="text">
+    <string>Image</string>
+   </property>
+  </action>
+  <action name="actionNewAudio">
+   <property name="text">
+    <string>Audio</string>
+   </property>
+  </action>
+  <action name="actionNewVideo">
+   <property name="text">
+    <string>Video</string>
+   </property>
+  </action>
+  <action name="actionOuvrir_Workspace">
+   <property name="text">
+    <string>Ouvrir Workspace</string>
+   </property>
+  </action>
+  <action name="actionNewArticle">
+   <property name="text">
+    <string>Article</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
