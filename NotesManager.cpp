@@ -25,18 +25,29 @@ void NotesManager::releaseInstance () {
     nmInstance = 0;
 }
 
+
+
+void NotesManager::addArticle (Note*n) {
+    notes<<n;
+}
+
+void NotesManager::operator <<(Note *n) {
+    notes<<n;
+}
+
+Note & NotesManager::getNewNote(const QString & fact) {
+    if(factories.keys().indexOf(fact) != -1) {
+        Note *na = factories[fact]->buildNote();
+        notes<<na;
+        return *na;
+    } else {
+        throw "this factory does not exist";
+    }
+}
+
 Note & NotesManager::getNewNArticle () {
     Note *na = factories["ArticleFactory"]->buildNote("titre");
-    Notes_list<<na;
+    notes<<na;
     return *na;
 }
-
-void NotesManager::addArticle (NArticle *a) {
-    Notes_list<<a;
-}
-
-void NotesManager::operator <<(NArticle *a) {
-    this->addArticle(a);
-}
-
 }

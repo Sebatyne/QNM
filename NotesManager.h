@@ -10,7 +10,8 @@
 namespace NM {
 
 class NotesManager {
-    QSet<Note*> Notes_list;
+    QSet<Note*> notes;
+    QSet<Note*> corbeille;
     static NotesManager* nmInstance;
     QMap<QString, NoteFactory*> factories;
 
@@ -21,11 +22,12 @@ public :
     static NotesManager & getInstance ();
     static void releaseInstance ();
 
-    unsigned int getNbNotes () const {return Notes_list.size();}
+    unsigned int getNbNotes () const {return notes.size();}
 
-    void addArticle (NArticle *a);
-    void operator <<(NArticle *a);
+    void addArticle (Note *n);
+    void operator <<(Note *n);
 
+    Note & getNewNote(const QString & fact);
     Note & getNewNArticle();
 };
 

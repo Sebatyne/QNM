@@ -20,14 +20,25 @@ ArticleFactory::ArticleFactory(QString &n)
 {
 }
 
-Note * ArticleFactory::buildNote(const QString &s) {
-    return new NArticle(getNewId(), s);
+Note * ArticleFactory::buildNote(const QString &title) {
+    return new NArticle(getNewId(), title);
 }
 
-Note * ArticleFactory::buildNote(NArticle *n) {
+/*Note * ArticleFactory::buildNote(NArticle *n) {
     NArticle *na = new NArticle(getNewId(), n->getTitle());
     na->setText((n->getText()));
     return na;
+}*/
+
+//----------------DocumentFactory----------------
+
+DocumentFactory::DocumentFactory(QString & n)
+    : NoteFactory(n)
+{
+}
+
+Note * DocumentFactory::buildNote(const QString &title) {
+    return new Document(getNewId(), title);
 }
 
 }
