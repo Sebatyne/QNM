@@ -8,6 +8,10 @@ NotesManager::NotesManager () {
     QString s("ArticleFactory");
     NoteFactory *nf = new ArticleFactory(s);
     factories.insert(s, nf);
+
+    s = "DocumentFactory";
+    nf = new DocumentFactory(s);
+    factories.insert(s, nf);
 }
 
 NotesManager & NotesManager::getInstance () {
@@ -25,7 +29,9 @@ void NotesManager::releaseInstance () {
     nmInstance = 0;
 }
 
-
+NotesManager::~NotesManager(){
+    //delete sur les factories, les notes si elles ne sont pas enregistrées...
+}
 
 void NotesManager::addArticle (Note*n) {
     notes<<n;
@@ -50,4 +56,11 @@ Note & NotesManager::getNewNArticle () {
     notes<<na;
     return *na;
 }
+
+Note & NotesManager::getNewDocument() {
+    Note *na = factories["DocumentFactory"]->buildNote();
+    notes<<na;
+    return *na;
+}
+
 }

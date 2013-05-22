@@ -41,6 +41,14 @@ public :
     Note * buildNote(const QString & title = "");
 };
 
+class MediaFactory : public NoteFactory {
+
+public :
+    MediaFactory(QString &n);
+
+    virtual Note * buildNote(const QString &title) = 0;
+};
+
 }
 
 #endif // NOTEFACTORY_H

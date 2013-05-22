@@ -46,5 +46,16 @@ void Document::log() const {
     qDebug() << "Document" << getId() << "\n";
 }
 
+//-----------------NMedia----------------
+
+NMedia::NMedia(unsigned int i, const QString & te, const QString & desc, const QString & pa)
+    : Note (i, te), description(desc), path(pa)
+{
+}
+
+void NMedia::log() const {
+    qDebug() << "NMedia" << getId() << "\n";
+}
 
 }
+

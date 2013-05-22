@@ -41,4 +41,9 @@ Note * DocumentFactory::buildNote(const QString &title) {
     return new Document(getNewId(), title);
 }
 
+//----------------MediaFactory----------------
+
+MediaFactory::MediaFactory(QString &n)
+    : NoteFactory(n) {}
+
 }

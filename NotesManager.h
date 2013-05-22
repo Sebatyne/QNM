@@ -17,6 +17,7 @@ class NotesManager {
 
 protected :
     NotesManager();
+    ~NotesManager();
 
 public :
     static NotesManager & getInstance ();
@@ -29,6 +30,7 @@ public :
 
     Note & getNewNote(const QString & fact);
     Note & getNewNArticle();
+    Note & getNewDocument();
 };
 
 }

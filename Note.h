@@ -62,6 +62,16 @@ public :
     void log() const;
 };
 
+class NMedia : public Note {
+    QString description;
+    QString path;
+
+public :
+    NMedia(unsigned int i, const QString & te = "", const QString & desc = "", const QString & pa = "");
+
+    void log() const;
+};
+
 }
 
 #endif // NOTE_H
