@@ -4,6 +4,8 @@
 #include <QString>
 #include <QSet>
 #include <QMap>
+#include <QDir>
+#include <QFile>
 #include "Note.h"
 #include "NoteFactory.h"
 
@@ -14,6 +16,8 @@ class NotesManager {
     QSet<Note*> corbeille;
     static NotesManager* nmInstance;
     QMap<QString, NoteFactory*> factories;
+    QString path;   //chemin par défaut des workspace
+    QDir workspace; //
 
 protected :
     NotesManager();
@@ -24,6 +28,9 @@ public :
     static void releaseInstance ();
 
     unsigned int getNbNotes () const {return notes.size();}
+
+    //load un workspace par défaut situé dans ../Ressources/workspace1
+    void loadWorkspace (QString fold);
 
     void addArticle (Note *n);
     void operator <<(Note *n);

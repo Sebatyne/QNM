@@ -13,6 +13,7 @@ unsigned int NoteFactory::getNewId() {
     return QDateTime::currentDateTime().toTime_t();
 }
 
+
 //----------------ArticleFactory----------------
 
 ArticleFactory::ArticleFactory(QString &n)
@@ -30,6 +31,7 @@ Note * ArticleFactory::buildNote(const QString &title) {
     return na;
 }*/
 
+
 //----------------DocumentFactory----------------
 
 DocumentFactory::DocumentFactory(QString & n)
@@ -40,6 +42,7 @@ DocumentFactory::DocumentFactory(QString & n)
 Note * DocumentFactory::buildNote(const QString &title) {
     return new Document(getNewId(), title);
 }
+
 
 //----------------MediaFactory----------------
 

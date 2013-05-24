@@ -1,5 +1,4 @@
-#ifndef NOTE_H
-#define NOTE_H
+#pragma once
 
 #include <QString>
 #include <QDebug>
@@ -12,14 +11,15 @@ private :
     Note(const Note & n);
 
 protected :
+    Note(const unsigned int i, const QString & te = "");
+    virtual ~Note() {};
+
     unsigned int id;
     QString title;
     bool loaded;
     bool modified;
 
 public :
-    Note(const unsigned int i, const QString & te = "");
-    virtual ~Note() {};
 
     const QString & getTitle () const {return title;}
     unsigned int getId () const {return id;}
@@ -62,16 +62,37 @@ public :
     void log() const;
 };
 
-class NMedia : public Note {
+
+class NMedia : public Note{
+    QString url;
     QString description;
-    QString path;
+
+protected :
+    NMedia(unsigned int i, const QString & te = "" , const QString & u = "", const QString & desc = "");
 
 public :
-    NMedia(unsigned int i, const QString & te = "", const QString & desc = "", const QString & pa = "");
+    const QString & getUrl() const{return url;}
+    void setUrl(const QString & url);
+
+    const QString & getDescription() const{return description;}
+    void setDescription(QString const & description);
 
     void log() const;
 };
 
-}
 
-#endif // NOTE_H
+class NAudio : public NMedia{
+public:
+    NAudio(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = "");
+};
+
+class NVideo : public NMedia{
+public:
+    NVideo(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = "");
+};
+
+class NImage : public NMedia{
+    NImage(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = "");
+};
+
+}

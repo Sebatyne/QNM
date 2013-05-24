@@ -4,7 +4,9 @@ namespace NM {
 
 NotesManager *NotesManager::nmInstance = 0;
 
-NotesManager::NotesManager () {
+NotesManager::NotesManager ()
+    : path(QString("../Ressources/"))
+{
     QString s("ArticleFactory");
     NoteFactory *nf = new ArticleFactory(s);
     factories.insert(s, nf);
@@ -31,6 +33,21 @@ void NotesManager::releaseInstance () {
 
 NotesManager::~NotesManager(){
     //delete sur les factories, les notes si elles ne sont pas enregistrées...
+}
+
+void NotesManager::loadWorkspace(QString fold) {
+    if (fold == "")
+        fold = "workspace1";
+
+    workspace.mkdir(path + fold);   //crée le dossier si jamais il n'existe pas
+    workspace.setPath(path + fold);
+
+    //parcourt le dossier. Si note : ajout au set notes. Si document, crée un document,
+    //l'ajoute au set notes, lui fait référencer ses notes (les crée au besoin, en not loaded)
+
+    workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot	| QDir::Readable | QDir::Writable);
+    QFileInfoList dir = workspace.entryInfoList();
+
 }
 
 void NotesManager::addArticle (Note*n) {

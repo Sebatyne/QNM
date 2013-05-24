@@ -48,8 +48,8 @@ void Document::log() const {
 
 //-----------------NMedia----------------
 
-NMedia::NMedia(unsigned int i, const QString & te, const QString & desc, const QString & pa)
-    : Note (i, te), description(desc), path(pa)
+NMedia::NMedia(unsigned int i, const QString & te, const QString & u, const QString & desc)
+    : Note (i, te), url(u), description(desc)
 {
 }
 
