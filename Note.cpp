@@ -28,7 +28,10 @@ void NArticle::log() const {
 
 //-----------------Document----------------
 Document::Document(unsigned int i, const QString &te)
-    : Note(i, te) {}
+    : Note(i, te)
+{
+    log();
+}
 
 void Document::addNote(Note *n) {
     notes << n;

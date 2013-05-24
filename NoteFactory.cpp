@@ -21,7 +21,11 @@ ArticleFactory::ArticleFactory(QString &n)
 {
 }
 
-Note * ArticleFactory::buildNote(const QString &title) {
+Note * ArticleFactory::buildNote(const unsigned int id, const QString &title) {
+    return new NArticle(id, title);
+}
+
+Note * ArticleFactory::buildNewNote(const QString &title) {
     return new NArticle(getNewId(), title);
 }
 
@@ -39,7 +43,11 @@ DocumentFactory::DocumentFactory(QString & n)
 {
 }
 
-Note * DocumentFactory::buildNote(const QString &title) {
+Note * DocumentFactory::buildNote(const unsigned int id, const QString &title) {
+    return new Document(id, title);
+}
+
+Note * DocumentFactory::buildNewNote(const QString &title) {
     return new Document(getNewId(), title);
 }
 

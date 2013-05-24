@@ -6,6 +6,8 @@
 #include <QMap>
 #include <QDir>
 #include <QFile>
+#include <QStringList>
+#include <QDebug>
 #include "Note.h"
 #include "NoteFactory.h"
 

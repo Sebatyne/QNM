@@ -11,7 +11,7 @@ private :
     Note(const Note & n);
 
 protected :
-    Note(const unsigned int i, const QString & te = "");
+    Note(const unsigned int i = 0, const QString & te = "");
     virtual ~Note() {};
 
     unsigned int id;

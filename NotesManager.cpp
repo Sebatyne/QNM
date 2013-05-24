@@ -7,13 +7,15 @@ NotesManager *NotesManager::nmInstance = 0;
 NotesManager::NotesManager ()
     : path(QString("../Ressources/"))
 {
-    QString s("ArticleFactory");
+    QString s("NArticle");
     NoteFactory *nf = new ArticleFactory(s);
     factories.insert(s, nf);
 
-    s = "DocumentFactory";
+    s = "Document";
     nf = new DocumentFactory(s);
     factories.insert(s, nf);
+
+    loadWorkspace(QString("workspace1"));
 }
 
 NotesManager & NotesManager::getInstance () {
@@ -46,7 +48,34 @@ void NotesManager::loadWorkspace(QString fold) {
     //l'ajoute au set notes, lui fait référencer ses notes (les crée au besoin, en not loaded)
 
     workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot	| QDir::Readable | QDir::Writable);
-    QFileInfoList dir = workspace.entryInfoList();
+    QStringList dir = workspace.entryList();
+
+    //lecture des fichiers
+    for (int i = 0; i < dir.size(); i++) {
+        //affiche le nom du fichier disque correspondant
+        qDebug() <<  workspace.path() + "/" + dir.at(i);
+
+        //on déclare un descripteur de fichier, ouvert en read-only
+        QFile fd(workspace.path() + "/" + dir.at(i));
+        fd.open(QIODevice::ReadOnly);
+
+        //on récupère l'id de la note, son type et son titre (chop supprime le dernier caractère de ligne "\n"
+        QString sid = fd.readLine();
+        sid.chop(1);
+        unsigned int id = sid.toUInt(); //vérification du nom ??
+        qDebug() << id;
+        QString type = fd.readLine();
+        type.chop(1);
+        QString title = fd.readLine();
+        title.chop(1);
+
+        //ajout à notes de la note qui vient d'être lue, puis fermeture de la note
+        qDebug() << "type :" << type<< " title :" << title;
+        notes << factories[type]->buildNote(id, title);
+
+        fd.close();
+    }
+
 
 }
 
@@ -60,7 +89,7 @@ void NotesManager::operator <<(Note *n) {
 
 Note & NotesManager::getNewNote(const QString & fact) {
     if(factories.keys().indexOf(fact) != -1) {
-        Note *na = factories[fact]->buildNote();
+        Note *na = factories[fact]->buildNewNote();
         notes<<na;
         return *na;
     } else {
@@ -69,13 +98,13 @@ Note & NotesManager::getNewNote(const QString & fact) {
 }
 
 Note & NotesManager::getNewNArticle () {
-    Note *na = factories["ArticleFactory"]->buildNote("titre");
+    Note *na = factories["NArticle"]->buildNewNote("titre");
     notes<<na;
     return *na;
 }
 
 Note & NotesManager::getNewDocument() {
-    Note *na = factories["DocumentFactory"]->buildNote();
+    Note *na = factories["Document"]->buildNewNote();
     notes<<na;
     return *na;
 }
