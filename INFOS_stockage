@@ -1,0 +1,36 @@
+*** NArticle :
+id
+NArticle
+"Titre du NArticle"
+	\n
+Texte de la note jusqu'à la fin du fichier
+
+
+
+*** Document :
+
+id
+Document
+"Titre du Document"
+	\n
+ids des notes contenues jusqu'à la fin du fichier
+
+
+
+*** NMedia :
+id
+NomDeLaClasse
+"Titre Média"
+
+url
+description jusqu'à la fin du fichier
+
+
+
+*** Les factories
+ont pour nom le type de note qui sera créée
+
+
+
+
+/!\ La ligne de titre peut être vide mais doit quand même apparaître
