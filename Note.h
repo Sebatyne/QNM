@@ -12,7 +12,6 @@ private :
 
 protected :
     Note(const unsigned int i = 0, const QString & te = "");
-    virtual ~Note() {};
 
     unsigned int id;
     QString title;
@@ -20,11 +19,18 @@ protected :
     bool modified;
 
 public :
+    virtual ~Note() {};
 
     const QString & getTitle () const {return title;}
     unsigned int getId () const {return id;}
+    bool isModified () {return modified;}
 
     void setTitle (const QString & te) {title = te;}
+    void setLoaded() {loaded = true;}
+    void setModified () {modified = true;}
+
+
+    virtual QString toText() const = 0;
 
     bool operator<(const Note & n ) {return this->id < n.getId();}
     bool operator>(const Note & n ) {return this->id > n.getId();}
@@ -45,6 +51,8 @@ public :
     const QString & getText () const {return text;};
     void setText (const QString & txt) {text = txt;};
 
+    QString toText () const;
+
     void log() const;
 
 };
@@ -59,12 +67,14 @@ public :
 
     void removeNote (Note *n);
 
+    QString toText () const;
+
     void log() const;
 };
 
 
 class NMedia : public Note{
-    QString url;
+    QString url;    //qui peut aussi contenir un path
     QString description;
 
 protected :

@@ -5,7 +5,7 @@ namespace NM {
 
 //-----------------NOTE-------------------
 Note::Note(const unsigned int i, const QString &te)
-    : id(i), title(te), loaded(true), modified(false)
+    : id(i), title(te), loaded(false), modified(false)
 {
     this->log();
 }
@@ -18,6 +18,17 @@ NArticle::NArticle(unsigned int i, const QString &te, const QString &txt)
     : Note(i, te), text(txt)
 {
     log();
+}
+
+QString NArticle::toText () const {
+    QString str;
+
+    str = QString::number(id) + "\n";
+    str += "NArticle\n";
+    str += title + "\n\n";
+    str += text;
+
+    return str;
 }
 
 void NArticle::log() const {
@@ -43,6 +54,23 @@ void Document::operator <<(Note *n) {
 
 void Document::removeNote(Note *n) {
     notes.removeOne(n);
+}
+
+QString Document::toText () const {
+    QString str;
+
+    str = QString::number(id)
+            + "Document\n"
+            + title + "\n\n";
+
+    //  --------- il faut encore ajouter les notes ----------
+
+    QListIterator<Note*> i(notes);
+     while (i.hasNext()) {
+         str += QString::number(i.next()->getId());
+     }
+
+    return str;
 }
 
 void Document::log() const {

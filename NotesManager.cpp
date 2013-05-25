@@ -35,6 +35,12 @@ void NotesManager::releaseInstance () {
 
 NotesManager::~NotesManager(){
     //delete sur les factories, les notes si elles ne sont pas enregistrées...
+    QSet<Note*>::iterator i;
+    for (i = notes.begin(); i != notes.end(); ++i) {
+        if ((*i)->isModified())
+            save(*i);
+        delete *i;
+    }
 }
 
 void NotesManager::loadWorkspace(QString fold) {
@@ -47,7 +53,7 @@ void NotesManager::loadWorkspace(QString fold) {
     //parcourt le dossier. Si note : ajout au set notes. Si document, crée un document,
     //l'ajoute au set notes, lui fait référencer ses notes (les crée au besoin, en not loaded)
 
-    workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot	| QDir::Readable | QDir::Writable);
+    workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot | QDir::Readable | QDir::Writable);
     QStringList dir = workspace.entryList();
 
     //lecture des fichiers
@@ -98,7 +104,7 @@ Note & NotesManager::getNewNote(const QString & fact) {
 }
 
 Note & NotesManager::getNewNArticle () {
-    Note *na = factories["NArticle"]->buildNewNote("titre");
+    Note *na = factories["NArticle"]->buildNewNote();
     notes<<na;
     return *na;
 }
@@ -107,6 +113,16 @@ Note & NotesManager::getNewDocument() {
     Note *na = factories["Document"]->buildNewNote();
     notes<<na;
     return *na;
+}
+
+void NotesManager::save(const Note * note) const {
+    QFile fd(workspace.path() + "/" + QString::number(note->getId()));
+    fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+
+    QTextStream in(&fd);
+    in << note->toText();
+
+    fd.close();
 }
 
 }

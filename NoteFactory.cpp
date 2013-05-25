@@ -26,7 +26,9 @@ Note * ArticleFactory::buildNote(const unsigned int id, const QString &title) {
 }
 
 Note * ArticleFactory::buildNewNote(const QString &title) {
-    return new NArticle(getNewId(), title);
+    NArticle *a = new NArticle(getNewId(), title);
+    a->setModified();
+    return a;
 }
 
 /*Note * ArticleFactory::buildNote(NArticle *n) {
@@ -48,7 +50,9 @@ Note * DocumentFactory::buildNote(const unsigned int id, const QString &title) {
 }
 
 Note * DocumentFactory::buildNewNote(const QString &title) {
-    return new Document(getNewId(), title);
+    Document *d = new Document(getNewId(), title);
+    d->setModified();
+    return d;
 }
 
 

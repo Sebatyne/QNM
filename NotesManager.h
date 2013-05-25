@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include <QTextStream>
 #include "Note.h"
 #include "NoteFactory.h"
 
@@ -40,6 +41,8 @@ public :
     Note & getNewNote(const QString & fact);
     Note & getNewNArticle();
     Note & getNewDocument();
+
+    void save(const Note * note) const;
 };
 
 }
