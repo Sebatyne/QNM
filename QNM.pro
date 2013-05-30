@@ -16,11 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     NotesManager.cpp \
     Note.cpp \
-    NoteFactory.cpp
+    NoteFactory.cpp \
+    ArticleWidget.cpp
 
 HEADERS  += mainwindow.h \
     NotesManager.h \
     Note.h \
-    NoteFactory.h
+    NoteFactory.h \
+    ArticleWidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    ArticleWidget.ui

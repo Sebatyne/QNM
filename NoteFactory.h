@@ -8,6 +8,8 @@
 
 namespace NM {
 
+class Note;
+
 class NoteFactory
 {
     QString name;

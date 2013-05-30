@@ -6,15 +6,15 @@ using namespace NM;
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    MainWindow w;
 
     NotesManager &nm = NotesManager::getInstance();
     
+    MainWindow w;
 
     /*NArticle *na = new NArticle(13456);
     nm<<na;*/
 
-    nm.getNewNArticle();
+    //nm.getNewNArticle();
 
     w.show();
 

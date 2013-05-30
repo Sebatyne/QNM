@@ -14,6 +14,9 @@
 
 namespace NM {
 
+class Note;
+class NoteFactory;
+
 class NotesManager {
     QSet<Note*> notes;
     QSet<Note*> corbeille;
@@ -31,6 +34,8 @@ public :
     static void releaseInstance ();
 
     unsigned int getNbNotes () const {return notes.size();}
+    const QDir getWorkspace () const {return workspace;}
+    Note *getNote(unsigned int id);
 
     //load un workspace par défaut situé dans ../Ressources/workspace1
     void loadWorkspace (QString fold);

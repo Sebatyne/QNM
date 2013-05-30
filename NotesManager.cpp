@@ -85,6 +85,15 @@ void NotesManager::loadWorkspace(QString fold) {
 
 }
 
+Note* NotesManager::getNote (unsigned int id) {
+    QSet<Note*>::iterator i;
+    for (i = notes.begin(); i != notes.end(); ++i) {
+        if ((*i)->getId() == id)
+            return *i;
+    }
+    return 0;
+}
+
 void NotesManager::addArticle (Note*n) {
     notes<<n;
 }

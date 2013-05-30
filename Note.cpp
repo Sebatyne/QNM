@@ -20,7 +20,7 @@ NArticle::NArticle(unsigned int i, const QString &te, const QString &txt)
     log();
 }
 
-QString NArticle::toText () const {
+QString  NArticle::toText () const {
     QString str;
 
     str = QString::number(id) + "\n";
@@ -29,6 +29,23 @@ QString NArticle::toText () const {
     str += text;
 
     return str;
+}
+
+void NArticle::load() {
+    NotesManager& nm = NotesManager::getInstance();
+
+    QFile fd(nm.getWorkspace().path() + "/" + QString::number(id));
+    fd.open(QIODevice::ReadOnly);
+    fd.readLine(); //on passe l'id
+    fd.readLine(); //on passe le type
+    fd.readLine(); //on passe le titre
+    fd.readLine(); //on passe le saut de ligne
+
+    while (!fd.atEnd()) {
+        text += fd.readLine();
+    }
+
+    loaded = true;
 }
 
 void NArticle::log() const {
@@ -71,6 +88,27 @@ QString Document::toText () const {
      }
 
     return str;
+}
+
+void Document::load() {
+    NotesManager& nm = NotesManager::getInstance();
+
+    QFile fd(nm.getWorkspace().path() + "/" + QString::number(id));
+    fd.open(QIODevice::ReadOnly);
+    fd.readLine(); //on passe l'id
+    fd.readLine(); //on passe le type
+    fd.readLine(); //on passe le titre
+    fd.readLine(); //on passe le saut de ligne
+
+    unsigned int idNote;
+
+    while (!fd.atEnd()) {
+        //----------récupérer le pointeur sur la bonne note
+        idNote = fd.readLine().toUInt();
+        notes<<nm.getNote(idNote);
+    }
+
+    loaded = true;
 }
 
 void Document::log() const {

@@ -3,6 +3,8 @@
 #include <QString>
 #include <QDebug>
 #include <QList>
+#include <QFile>
+#include "NotesManager.h"
 
 namespace NM {
 
@@ -31,6 +33,7 @@ public :
 
 
     virtual QString toText() const = 0;
+    virtual void load() = 0;
 
     bool operator<(const Note & n ) {return this->id < n.getId();}
     bool operator>(const Note & n ) {return this->id > n.getId();}
@@ -52,6 +55,7 @@ public :
     void setText (const QString & txt) {text = txt;};
 
     QString toText () const;
+    void load();
 
     void log() const;
 
@@ -68,6 +72,7 @@ public :
     void removeNote (Note *n);
 
     QString toText () const;
+    void load();
 
     void log() const;
 };
