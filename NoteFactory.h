@@ -1,5 +1,4 @@
-#ifndef NOTEFACTORY_H
-#define NOTEFACTORY_H
+#pragma once
 
 #include <QString>
 #include <QMap>
@@ -8,52 +7,69 @@
 
 namespace NM {
 
-class Note;
+    class Note;
 
-class NoteFactory
-{
-    QString name;
+    class NoteFactory
+    {
+        QString name;
+    protected :
+        NoteFactory(QString & n);
+        unsigned int getNewId();
+    public:
+        const QString & getName() const {return name;}
 
-protected :
-    unsigned int getNewId();
+        virtual Note * buildNote(const unsigned int id, const QString & title = "") = 0;
+        virtual Note * buildNewNote(const QString & title = "") = 0;
+        //virtual Note * buildNote(Note * n);
+    };
 
-public:
-    NoteFactory(QString & n);
+    class ArticleFactory : public NoteFactory {
 
-    const QString & getName() const {return name;}
+    public :
+        ArticleFactory(QString & n);
 
-    virtual Note * buildNote(const unsigned int id, const QString & title = "") = 0;
-    virtual Note * buildNewNote(const QString & title = "") = 0;
-    //virtual Note * buildNote(Note * n);
-};
+        Note * buildNote(const unsigned int id, const QString & title = "");
+        Note * buildNewNote(const QString & title = "");
+        //Note * buildNote(NArticle *n);
+    };
 
-class ArticleFactory : public NoteFactory {
+    class DocumentFactory : public NoteFactory {
 
-public :
-    ArticleFactory(QString & n);
+    public :
+        DocumentFactory(QString & n);
 
-    Note * buildNote(const unsigned int id, const QString & title = "");
-    Note * buildNewNote(const QString & title = "");
-    //Note * buildNote(NArticle *n);
-};
+        Note * buildNote(const unsigned int id, const QString & title = "");
+        Note * buildNewNote(const QString & title = "");
+    };
 
-class DocumentFactory : public NoteFactory {
+    class MediaFactory : public NoteFactory {
+    protected:
+        MediaFactory(QString &n);
+    public :
+        virtual Note * buildNote(const unsigned int id, const QString &title) = 0;
+        virtual Note * buildNewNote(const QString &title) = 0;
+    };
 
-public :
-    DocumentFactory(QString & n);
+    class AudioFactory : public MediaFactory{
+    public:
+        AudioFactory(QString & n) : MediaFactory(n){}
+        Note * buildNote(const unsigned int id, const QString &title);
+        Note * buildNewNote(const QString &title);
 
-    Note * buildNote(const unsigned int id, const QString & title = "");
-    Note * buildNewNote(const QString & title = "");
-};
+    };
 
-class MediaFactory : public NoteFactory {
+    class VideoFactory : public MediaFactory{
+    public:
+        VideoFactory(QString & n) : MediaFactory(n){}
+        Note * buildNote(const unsigned int id, const QString &title);
+        Note * buildNewNote(const QString &title);
+    };
 
-public :
-    MediaFactory(QString &n);
-
-    virtual Note * buildNewNote(const QString &title) = 0;
-};
+    class ImageFactory : public MediaFactory{
+    public:
+        ImageFactory(QString & n) : MediaFactory(n){}
+        Note * buildNote(const unsigned int id, const QString &title);
+        Note * buildNewNote(const QString &title);
+    };
 
 }
-
-#endif // NOTEFACTORY_H
