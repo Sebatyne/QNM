@@ -20,11 +20,11 @@ namespace NM {
         factories.insert(s, nf);
 
         s = "NAudio";
-        nb = new AudioFactory(s);
+        nf = new AudioFactory(s);
         factories.insert(s, nf);
 
         s = "NImage";
-        nb = new ImageFactory(s);
+        nf = new ImageFactory(s);
         factories.insert(s, nf);
 
         loadWorkspace(QString("workspace1"));
