@@ -6,10 +6,10 @@ namespace NM {
     Note::Note(const unsigned int i, const QString &te)
         : id(i), title(te), loaded(false), modified(false)
     {
-        this->log();
+        //this->log();
     }
 
-    void Note::log() const {};
+    void Note::log() const {}
 
 
     //-----------------NARTICLE---------------
@@ -177,3 +177,4 @@ namespace NM {
         return str;
     }
 }
+
