@@ -47,8 +47,13 @@ namespace NM {
 
     NotesManager::~NotesManager(){
         //delete sur les factories, les notes si elles ne sont pas enregistrées...
-        QSet<Note*>::iterator i;
+        /*QSet<Note*>::iterator i;
         for (i = notes.begin(); i != notes.end(); ++i) {
+            if ((*i)->isModified())
+                save(*i);
+            delete *i;
+        }*/
+        for(Iterator i = begin(); i != end(); i++) {
             if ((*i)->isModified())
                 save(*i);
             delete *i;
@@ -98,11 +103,16 @@ namespace NM {
     }
 
     Note* NotesManager::getNote (unsigned int id) {
-        QSet<Note*>::iterator i;
+        /*QSet<Note*>::iterator i;
         for (i = notes.begin(); i != notes.end(); ++i) {
             if ((*i)->getId() == id)
                 return *i;
+        }*/
+        for(Iterator i = begin(); i != end(); i++) {
+            if ((*i)->getId() == id)
+                return *i;
         }
+        qDebug() << "la note d'id " << id << " n'a pas ete trouvee";
         return 0;
     }
 

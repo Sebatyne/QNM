@@ -69,6 +69,24 @@ namespace NM {
 
     class Document : public Note {
         QList<Note*> notes;
+
+        class Iterator {
+            friend class Document;
+            QList<Note*>::iterator i;
+
+        public :
+            Iterator(QList<Note*> &s) {i=s.begin();}
+            Iterator(QList<Note*>::iterator j) {i = j;}
+            Note * operator*() {return *(i);}
+            Iterator operator++() {i++; return *this;}
+            Iterator operator++(int) {Iterator j(i); i++; return j;}
+            Iterator operator--() {i--; return i;}
+            Iterator operator--(int) {Iterator j(i); i--; return j;}
+            bool operator==(QList<Note*>::iterator j) {return i==j;}
+            bool operator!=(QList<Note*>::iterator j) {return i!=j;}
+            bool operator!=(Iterator j) {return (*i)!=(*j);}
+        };
+
     public :
         Document(unsigned int i,const QString & te = "");
 
@@ -83,6 +101,9 @@ namespace NM {
         Note::noteType getType(){return Note::NDocument;}
 
         void log() const;
+        //fonctions de l'itérateur
+        Iterator begin() {return Iterator(notes);}
+        Iterator end() {Iterator i(notes.end()); return i;}
     };
 
 

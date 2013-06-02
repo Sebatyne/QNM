@@ -25,6 +25,23 @@ class NotesManager {
     QString path;   //chemin par défaut des workspace
     QDir workspace; //
 
+    class Iterator {
+        friend class NotesManager;
+        QSet<Note*>::iterator i;
+
+    public :
+        Iterator(QSet<Note*> &s) {i=s.begin();}
+        Iterator(QSet<Note*>::iterator j) {i = j;}
+        Note * operator*() {return *(i);}
+        Iterator operator++() {i++; return *this;}
+        Iterator operator++(int) {Iterator j(i); i++; return j;}
+        Iterator operator--() {i--; return i;}
+        Iterator operator--(int) {Iterator j(i); i--; return j;}
+        bool operator==(QSet<Note*>::iterator j) {return i==j;}
+        bool operator!=(QSet<Note*>::iterator j) {return i!=j;}
+        bool operator!=(Iterator j) {return (*i)!=(*j);}
+    };
+
 protected :
     NotesManager();
     ~NotesManager();
@@ -48,6 +65,10 @@ public :
     Note & getNewDocument();
 
     void save(const Note * note) const;
+
+    //fonctions de l'itérateur
+    Iterator begin() {return Iterator(notes);}
+    Iterator end() {Iterator i(notes.end()); return i;}
 };
 
 }
