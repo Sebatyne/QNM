@@ -21,13 +21,13 @@ namespace NM {
         bool modified;
 
     public :
-        enum noteType{NArticle, NDocument, NVideo, NAudio, NImage};
+        enum noteType{NArticle, Document, NVideo, NAudio, NImage};
 
         virtual ~Note() {}
 
         const QString & getTitle () const {return title;}
         unsigned int getId () const {return id;}
-        bool isModified () {return modified;}
+        bool isModified () const {return modified;}
 
         void setTitle (const QString & te) {title = te;}
         void setLoaded() {loaded = true;}
@@ -37,7 +37,7 @@ namespace NM {
         virtual QString toText() const = 0;
         virtual void load() = 0;
 
-        virtual noteType getType() = 0;
+        virtual noteType getType() const = 0;
 
         bool operator<(const Note & n ) {return this->id < n.getId();}
         bool operator>(const Note & n ) {return this->id > n.getId();}
@@ -61,7 +61,7 @@ namespace NM {
         QString toText () const;
         void load();
 
-        Note::noteType getType(){return Note::NDocument;}
+        Note::noteType getType() const {return Note::NArticle;}
 
         void log() const;
 
@@ -69,6 +69,7 @@ namespace NM {
 
     class Document : public Note {
         QList<Note*> notes;
+    public :
 
         class Iterator {
             friend class Document;
@@ -87,7 +88,6 @@ namespace NM {
             bool operator!=(Iterator j) {return (*i)!=(*j);}
         };
 
-    public :
         Document(unsigned int i,const QString & te = "");
 
         void addNote (Note *n);
@@ -98,12 +98,12 @@ namespace NM {
         QString toText () const;
         void load();
 
-        Note::noteType getType(){return Note::NDocument;}
+        Note::noteType getType() const {return Note::Document;}
 
-        void log() const;
-        //fonctions de l'itérateur
         Iterator begin() {return Iterator(notes);}
         Iterator end() {Iterator i(notes.end()); return i;}
+
+        void log() const;
     };
 
 
@@ -117,10 +117,12 @@ namespace NM {
         const QString & getUrl() const{return url;}
         void setUrl(const QString & url);
 
-        const QString & getDescription() const{return description;}
+        const QString & getDescription() const {return description;}
         void setDescription(QString const & description);
 
         virtual QString toText() const = 0;
+        virtual Note::noteType getType() const = 0;
+
 
         void log() const;
 
@@ -132,21 +134,21 @@ namespace NM {
     public:
         NAudio(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
-        Note::noteType getType(){return Note::NAudio;}
+        Note::noteType getType() const {return Note::NAudio;}
     };
 
     class NVideo : public NMedia{
     public:
         NVideo(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
-        Note::noteType getType(){return Note::NVideo;}
+        Note::noteType getType() const {return Note::NVideo;}
     };
 
     class NImage : public NMedia{
     public:
         NImage(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
-        Note::noteType getType(){return Note::NImage;}
+        Note::noteType getType() const {return Note::NImage;}
     };
 
 }
