@@ -41,10 +41,10 @@ namespace NM{
         enum latexDocType{book, article, report};
 
         LaTexNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
-            ignoreAudio = true;
-            ignoreVideo = true;
-            ignoreNumbering = false;
-            delimitParts = false;
+            ignoreAudio = false;
+            ignoreVideo = false;
+            ignoreNumbering = true;
+            delimitParts = true;
             displayDate = false;
             docType = article;
 
@@ -77,5 +77,7 @@ namespace NM{
         QString NoteToLatex(Note * ConvertedNote, unsigned int titleLevel);
         QString ArticleToLatex(NArticle * ConvertedArticle, unsigned int titleLevel);
         QString ImageToLatex(NImage * ConvertedImage, unsigned int titleLevel);
+        QString AudioToLatex(NAudio * ConvertedAudio, unsigned int titleLevel);
+        QString VideoToLatex(NVideo * ConvertedVideo, unsigned int titleLevel);
     };
 }
