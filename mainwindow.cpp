@@ -8,6 +8,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->actionNewArticle->setIcon(QIcon(QPixmap(QString(":/icons/note-new.png"))));
+    ui->actionNewDocument->setIcon(QIcon(QPixmap(QString(":/icons/folder-new.png"))));
+    ui->actionNewVideo->setIcon(QIcon(QPixmap(QString(":/icons/video.png"))));
+    ui->actionNewImage->setIcon(QIcon(QPixmap(QString(":/icons/image.png"))));
+    ui->actionNewAudio->setIcon(QIcon(QPixmap(QString(":/icons/audio.png"))));
+    ui->actionHTML->setIcon(QIcon(QPixmap(QString(":/icons/html.png"))));
+    ui->actionTeX->setIcon(QIcon(QPixmap(QString(":/icons/pdf.png"))));
+    ui->actionText->setIcon(QIcon(QPixmap(QString(":/icons/text.png"))));
+
     createListNotes();
 }
 

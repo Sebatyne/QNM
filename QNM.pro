@@ -29,3 +29,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     ArticleWidget.ui
+
+RESOURCES += \
+    icons/icons.qrc

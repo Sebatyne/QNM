@@ -10,7 +10,13 @@ namespace NM {
     }
 
     unsigned int NoteFactory::getNewId() {
-        return QDateTime::currentDateTime().toTime_t();
+        unsigned int i = QDateTime::currentDateTime().toTime_t();
+
+        while (NotesManager::getInstance().getNote(i)) {
+            i = QDateTime::currentDateTime().toTime_t();
+        }
+
+        return i;
     }
 
 

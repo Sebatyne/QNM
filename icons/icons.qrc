@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>audio.png</file>
+        <file>folder.png</file>
+        <file>folder-new.png</file>
+        <file>html.png</file>
+        <file>icons.qrc</file>
+        <file>image.png</file>
+        <file>note.png</file>
+        <file>note-new.png</file>
+        <file>pdf.png</file>
+        <file>tag.png</file>
+        <file>text.png</file>
+        <file>text-editor.png</file>
+        <file>video.png</file>
+    </qresource>
+</RCC>
