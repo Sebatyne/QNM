@@ -78,7 +78,7 @@ namespace NM {
         public :
             Iterator(QList<Note*> &s) {i=s.begin();}
             Iterator(QList<Note*>::iterator j) {i = j;}
-            Note * operator*() {return *(i);}
+            Note * operator*() {return i.operator *();}
             Iterator operator++() {i++; return *this;}
             Iterator operator++(int) {Iterator j(i); i++; return j;}
             Iterator operator--() {i--; return i;}
@@ -100,8 +100,8 @@ namespace NM {
 
         Note::noteType getType() const {return Note::Document;}
 
-        Iterator begin() {return Iterator(notes);}
-        Iterator end() {Iterator i(notes.end()); return i;}
+        Iterator begin() {this->load(); return Iterator(notes);}
+        Iterator end() {this->load(); Iterator i(notes.end()); return i;}
 
         void log() const;
     };

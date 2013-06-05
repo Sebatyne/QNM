@@ -16,9 +16,9 @@ int main(int argc, char *argv[]) {
 
     w.show();
 
-    nm.releaseInstance();
+    //nm.releaseInstance();
 
-    NArticle * A1 = new NArticle(1, "Premièrement", "Essai d'exportation du 1er article au format Latex");
+    /*NArticle * A1 = new NArticle(1, "Premièrement", "Essai d'exportation du 1er article au format Latex");
     NVideo * A2 = new NVideo(2, "Deuxièmement, regarde attentivement", "http://youtube.com/?w=FEG6382", "Documentaire sur les papillons");
     NArticle * A3 = new NArticle(3, "Troisièmement", "Essai d'exportation du 3em article au format Latex");
     NImage * A4 = new NImage(4, "Coucou", "1.jpg", "J'ai un regard trop vénere");
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
     LaTexNotesExporter * Exp1 = new LaTexNotesExporter(D1);
     QString t = Exp1->getRawExport();
-    qDebug() << t;
+    qDebug() << t;*/
     return a.exec();
 }
 

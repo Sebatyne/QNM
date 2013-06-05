@@ -90,10 +90,17 @@ namespace NM {
     }
 
     void Document::load() {
+        if (this->loaded) { return; }
+
+        loaded = true;
+
         NotesManager& nm = NotesManager::getInstance();
 
+        qDebug() <<nm.getWorkspace().path() + "/" + QString::number(id);
+
         QFile fd(nm.getWorkspace().path() + "/" + QString::number(id));
-        fd.open(QIODevice::ReadOnly);
+        if(!fd.open(QIODevice::ReadOnly))
+            qDebug() << "échec lors de l'ouverture de fichier\n";
         fd.readLine(); //on passe l'id
         fd.readLine(); //on passe le type
         fd.readLine(); //on passe le titre
@@ -103,11 +110,12 @@ namespace NM {
 
         while (!fd.atEnd()) {
             //----------récupérer le pointeur sur la bonne note
-            idNote = fd.readLine().toUInt();
+            QString idS = fd.readLine();
+            idS.chop(1);
+            idNote = idS.toUInt();
+            qDebug() << "chargement de la note d'id : " << idNote << "\n";
             notes<<nm.getNote(idNote);
         }
-
-        loaded = true;
     }
 
     void Document::log() const {
