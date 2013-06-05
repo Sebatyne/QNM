@@ -41,13 +41,24 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeView" name="View_Documents">
+        <widget class="QTreeWidget" name="Tree">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="columnCount">
+          <number>1</number>
+         </property>
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>

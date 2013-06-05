@@ -1,4 +1,4 @@
-#include "notesExporter.h"
+#include "NotesExporter.h"
 
 namespace NM{
     QString LaTexNotesExporter::NoteToLatex(Note * ConvertedNote, unsigned int titleLevel){

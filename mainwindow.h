@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
+#include <QList>
+#include <QTreeWidgetItem>
+#include "NotesManager.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +21,8 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    QList<QTreeWidgetItem *> items;
+
 };
 
 #endif // MAINWINDOW_H

@@ -47,8 +47,7 @@ namespace NM {
 
     NotesManager::~NotesManager(){
         //delete sur les factories, les notes si elles ne sont pas enregistrées...
-        QSet<Note*>::iterator i;
-        for (i = notes.begin(); i != notes.end(); ++i) {
+        for(Iterator i = begin(); i != end(); i++) {
             if ((*i)->isModified())
                 save(*i);
             delete *i;
