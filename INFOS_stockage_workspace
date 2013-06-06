@@ -1,0 +1,22 @@
+<!DOCTYPE QNM>
+<workspace>
+	<name>	nom du workspace = nom du dossier actuel </name>
+	<note>
+		<type> type de la note  </type>
+		<id> id de la note = nom du fichier de sauvegarde </id>
+		<title> titre de la note </title>
+	</note>
+	
+	<document>
+		<id> id du document </id>
+		<title> titre du document </titre>
+		
+		<note>
+			...
+		</note>
+	</document>
+	
+	<corbeille>
+		...
+	</corbeille>
+</workspace>
