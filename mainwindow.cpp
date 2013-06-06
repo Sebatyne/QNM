@@ -38,8 +38,7 @@ void MainWindow::createListNotes() {
         else {
             QNMStandardItem *item = new QNMStandardItem((*i)->getTitle());
             item->setEditable(false);
-            item->setIcon(QIcon(QPixmap(QString("./icons/note.png"))));
-
+            item->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
             item->setId((*i)->getId());
             parentItem->appendRow(item);
         }
@@ -51,7 +50,7 @@ void MainWindow::createListNotes() {
 QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
     QNMStandardItem *item = new QNMStandardItem(doc->getTitle());
     item->setEditable(false);
-    item->setIcon(QIcon(QPixmap(QString("./icons/folder.png"))));
+    item->setIcon(QIcon(QPixmap(QString(":/icons/folder.png"))));
     item->setId(doc->getId());
 
     for(NM::Document::Iterator i = doc->begin(); i != doc->end(); i++) {
@@ -61,6 +60,7 @@ QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
         else {
             QNMStandardItem *item2 = new QNMStandardItem((*i)->getTitle());
             item2->setEditable(false);
+            item2->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
             item2->setId((*i)->getId());
             item->appendRow(item2);
         }
