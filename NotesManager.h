@@ -48,6 +48,7 @@ namespace NM {
         Note & getNewDocument();
 
         void save(const Note * note) const;
+        void saveWorkspace();
 
         void createNoteFromNode(const QDomNode n);
         void createDocFromNode(const QDomNode n);

@@ -52,6 +52,8 @@ namespace NM {
                 save(*i);
             delete *i;
         }
+
+        saveWorkspace();
     }
 
     void NotesManager::loadWorkspace(QString fold) {
@@ -234,6 +236,65 @@ namespace NM {
 
         QTextStream in(&fd);
         in << note->toText();
+
+        fd.close();
+    }
+
+    void NotesManager::saveWorkspace() {
+        QDomDocument doc("QNM");
+        QDomElement root = doc.createElement(workspace.dirName());
+        doc.appendChild(root);
+
+        for (Iterator it = begin(); it != end(); it++) {
+            if ((*it)->getType() != NM::Note::Document) {
+                QDomElement node = doc.createElement("note");
+                root.appendChild(node);
+
+                QDomElement tag = doc.createElement("type");
+                node.appendChild(tag);
+                QDomText t = doc.createTextNode((*it)->getTypeText());
+                tag.appendChild(t);
+
+                tag = doc.createElement("id");
+                node.appendChild(tag);
+                t = doc.createTextNode(QString::number((*it)->getId()));
+                tag.appendChild(t);
+
+                tag = doc.createElement("title");
+                node.appendChild(tag);
+                t = doc.createTextNode((*it)->getTitle());
+                tag.appendChild(t);
+            }
+            //s'il s'agit d'un document
+            else {
+                QDomElement node = doc.createElement("document");
+                root.appendChild(node);
+
+                QDomElement tag = doc.createElement("id");
+                node.appendChild(tag);
+                QDomText t = doc.createTextNode(QString::number((*it)->getId()));
+                tag.appendChild(t);
+
+                tag = doc.createElement("title");
+                node.appendChild(tag);
+                t = doc.createTextNode((*it)->getTitle());
+                tag.appendChild(t);
+
+                for(NM::Document::Iterator doc_it = dynamic_cast<NM::Document*>((*it))->begin();
+                    doc_it != dynamic_cast<NM::Document*>((*it))->end(); doc_it++) {
+                        tag = doc.createElement("sous-note");
+                        node.appendChild(tag);
+                        t = doc.createTextNode(QString::number((*doc_it)->getId()));
+                        tag.appendChild(t);
+                }
+            }
+        }
+
+        QFile fd(workspace.path() + "/" + workspace.dirName());
+        fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+
+        QTextStream in(&fd);
+        in << doc.toString();
 
         fd.close();
     }

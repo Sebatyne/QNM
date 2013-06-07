@@ -17,6 +17,8 @@ int main(int argc, char *argv[]) {
     
     MainWindow w;
 
+    nm.saveWorkspace();
+
     w.show();
 
     //nm.releaseInstance();

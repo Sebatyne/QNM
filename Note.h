@@ -39,6 +39,7 @@ namespace NM {
         virtual void load() = 0;
 
         virtual noteType getType() const = 0;
+        virtual QString getTypeText() const = 0;
 
         bool operator<(const Note & n ) {return this->id < n.getId();}
         bool operator>(const Note & n ) {return this->id > n.getId();}
@@ -63,6 +64,7 @@ namespace NM {
         void load();
 
         Note::noteType getType() const {return Note::NArticle;}
+        QString getTypeText() const {return QString("NArticle");}
 
         void log() const;
 
@@ -100,6 +102,7 @@ namespace NM {
         void load();
 
         Note::noteType getType() const {return Note::Document;}
+        QString getTypeText() const {return QString("Document");}
 
         Iterator begin() {this->load(); return Iterator(notes);}
         Iterator end() {this->load(); Iterator i(notes.end()); return i;}
@@ -123,6 +126,7 @@ namespace NM {
 
         virtual QString toText() const = 0;
         virtual Note::noteType getType() const = 0;
+        QString getTypeText() const = 0;
 
 
         void log() const;
@@ -136,6 +140,7 @@ namespace NM {
         NAudio(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
         Note::noteType getType() const {return Note::NAudio;}
+        QString getTypeText() const {return QString("NAudio");}
     };
 
     class NVideo : public NMedia{
@@ -143,6 +148,7 @@ namespace NM {
         NVideo(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
         Note::noteType getType() const {return Note::NVideo;}
+        QString getTypeText() const {return QString("NVideo");}
     };
 
     class NImage : public NMedia{
@@ -150,6 +156,7 @@ namespace NM {
         NImage(unsigned int i, const QString & te = "", const QString & url = "", const QString & desc = ""): NMedia(i, te, url, desc) {}
         QString toText() const;
         Note::noteType getType() const {return Note::NImage;}
+        QString getTypeText() const {return QString("NImage");}
     };
 
 }
