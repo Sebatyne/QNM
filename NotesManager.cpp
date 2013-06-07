@@ -86,13 +86,20 @@ namespace NM {
 
             //parcours des noeuds
             while (!n.isNull()) {
-                //on teste si note ou document
+                //on teste si note
                 if (n.nodeName() == "note") {
                     createNoteFromNode(n);
-                } else if(n.nodeName() == "document") {
-                    createDocFromNode(n);
                 }
                 n = n.nextSibling();
+            }
+
+            n = docElem.firstChild();
+            while (!n.isNull()) {
+                if(n.nodeName() == "document") {
+                        //puis ajout des documents
+                        createDocFromNode(n);
+                }
+                    n = n.nextSibling();
             }
 
         //ancienne solution chargeant le workspace en fonction des fichiers présents
