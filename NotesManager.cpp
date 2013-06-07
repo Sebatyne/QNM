@@ -64,7 +64,37 @@ namespace NM {
         //parcourt le dossier. Si note : ajout au set notes. Si document, crée un document,
         //l'ajoute au set notes, lui fait référencer ses notes (les crée au besoin, en not loaded)
 
-        workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot | QDir::Readable | QDir::Writable);
+        //parsage du fichier de workspace
+        QDomDocument doc(workspace.path());
+
+        QFile file(workspace.path() + "/" +workspace.dirName());
+
+            if (!file.open(QIODevice::ReadOnly))
+                qDebug() << "echec à l'ouverture de la ressource\n";
+            if (!doc.setContent(&file)) {
+                qDebug() << "echec lors de la lecture du dom\n";
+                 file.close();
+            }
+
+            file.close();
+
+            QDomElement docElem = doc.documentElement();
+
+            QDomNode n = docElem.firstChild();
+
+            //parcours des noeuds
+            while (!n.isNull()) {
+                //on teste si note ou document
+                if (n.nodeName() == "note") {
+                    createNoteFromNode(n);
+                } else if(n.nodeName() == "document") {
+                    createDocFromNode(n);
+                }
+                n = n.nextSibling();
+            }
+
+        //ancienne solution chargeant le workspace en fonction des fichiers présents
+        /*workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot | QDir::Readable | QDir::Writable);
         QStringList dir = workspace.entryList();
 
         //lecture des fichiers
@@ -91,9 +121,72 @@ namespace NM {
             notes << factories[type]->buildNote(id, title);
 
             fd.close();
+        }*/
+    }
+
+    void NotesManager::createNoteFromNode(const QDomNode n) {
+        QDomNode n2 = n.firstChild();
+
+        unsigned int id;
+        QString title;
+        QString type;
+
+        qDebug() << n2.toElement().text();
+
+        while (!n2.isNull()) {
+            QDomElement e = n2.toElement();
+            //qDebug() << e.text();
+
+            if (!e.isNull()) {
+                if (e.tagName() == QString("title")) {
+                        title = e.text();
+                } else if (e.tagName() == QString("type")) {
+                        type = e.text();
+                } else if (e.tagName() == QString("id")) {
+                        id = e.text().toUInt();
+                }
+            }
+
+            n2 = n2.nextSibling();
         }
 
+        qDebug() << "Note id :" << id;
+        notes << factories[type]->buildNote(id, title);
+    }
 
+    void NotesManager::createDocFromNode(const QDomNode n) {
+        QDomNode n2 = n.firstChild();
+
+        unsigned int id;
+        QString title;
+        QList<unsigned int> sn;
+
+        qDebug() << n2.toElement().text();
+
+        while (!n2.isNull()) {
+            QDomElement e = n2.toElement();
+            //qDebug() << e.text();
+
+            if (!e.isNull()) {
+                if (e.tagName() == QString("title")) {
+                        title = e.text();
+                } else if (e.tagName() == QString("id")) {
+                    id = e.text().toUInt();
+                } else if (e.tagName() == QString("sous-note")) {
+                    sn << e.text().toUInt();
+                }
+            }
+
+            n2 = n2.nextSibling();
+        }
+
+        NM::Document *d = dynamic_cast<NM::Document*>(factories["Document"]->buildNote(id, title));
+
+        for(QList<unsigned int>::iterator it = sn.begin(); it != sn.end(); it++) {
+            d->addNote(this->getNote(*it));
+        }
+
+        notes << d;
     }
 
     Note* NotesManager::getNote (unsigned int id) {

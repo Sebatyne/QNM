@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QList>
 #include <QFile>
+#include <QtXml>
 #include "NotesManager.h"
 
 namespace NM {

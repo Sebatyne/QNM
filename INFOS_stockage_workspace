@@ -11,12 +11,14 @@
 		<id> id du document </id>
 		<title> titre du document </titre>
 		
-		<note>
-			...
-		</note>
+		<sous-note>id de la note</sous-note>
+		<sous-note>id d'une autre sous-note</sous-note>
+		...
 	</document>
 	
 	<corbeille>
 		...
 	</corbeille>
 </workspace>
+
+Comment se passe l'export des documents si on supprime leurs fichiers disques ?

@@ -32,7 +32,6 @@ void MainWindow::createListNotes() {
     for(NM::NotesManager::Iterator i = NM::NotesManager::getInstance().begin();
             i != NM::NotesManager::getInstance().end(); i++) {
         if ((*i)->getType() == NM::Note::Document) {
-            (*i)->load();
             parentItem->appendRow( getQNMStandardDocument(dynamic_cast<NM::Document*>(*i)) );
         }
         else {

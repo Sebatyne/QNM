@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QTextStream>
+#include <QtXml>
 #include "Note.h"
 #include "NoteFactory.h"
 
@@ -47,6 +48,9 @@ namespace NM {
         Note & getNewDocument();
 
         void save(const Note * note) const;
+
+        void createNoteFromNode(const QDomNode n);
+        void createDocFromNode(const QDomNode n);
 
         class Iterator {
                 friend class NotesManager;

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <cstdlib>
+#include <QDebug>
 
 #include "NotesManager.h"
 #include "NotesExporter.h"
@@ -11,6 +12,8 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     NotesManager &nm = NotesManager::getInstance();
+
+    qDebug() << nm.getNbNotes() <<endl;
     
     MainWindow w;
 
