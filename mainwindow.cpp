@@ -18,11 +18,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionText->setIcon(QIcon(QPixmap(QString(":/icons/text.png"))));
 
     createListNotes();
+
+    connect(ui->actionNewArticle,SIGNAL(triggered()), this, SLOT(dialogNewArticle()));
+    connect(ui->actionNewDocument,SIGNAL(triggered()), this, SLOT(dialogNewDocument()));
+    connect(ui->actionNewVideo,SIGNAL(triggered()), this, SLOT(dialogNewVideo()));
+    connect(ui->actionNewImage,SIGNAL(triggered()), this, SLOT(dialogNewImage()));
+    connect(ui->actionNewAudio,SIGNAL(triggered()), this, SLOT(dialogNewAudio()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    NM::NotesManager::releaseInstance();
+}
+
+void MainWindow::saveWork() {
+    NM::NotesManager::getInstance().saveWorkspace();
+    //NM::NotesManager::releaseInstance();
 }
 
 void MainWindow::createListNotes() {
@@ -66,4 +78,67 @@ QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
     }
 
     return item;
+}
+
+QString MainWindow::dialogNewNote() {
+    bool ok = false;
+    QString name = QInputDialog::getText(this, "Nouvelle Note", "Titre de la note :", QLineEdit::Normal, QString(), &ok);
+    if (ok && !name.isEmpty())
+        return name;
+    else
+        return QString();
+}
+
+void MainWindow::dialogNewArticle() {
+    QString name = dialogNewNote();
+    if (!name.isEmpty()) {
+        NM::Note &n = NM::NotesManager::getInstance().getNewNArticle();
+        n.setTitle(name);
+        n.setModified();
+        saveWork();
+        createListNotes();
+    }
+}
+void MainWindow::dialogNewImage() {
+    QString name = dialogNewNote();
+    if (!name.isEmpty()) {
+        NM::Note &n = NM::NotesManager::getInstance().getNewNImage();
+        n.setTitle(name);
+        n.setModified();
+        saveWork();
+        createListNotes();
+    }
+}
+
+void MainWindow::dialogNewVideo() {
+    QString name = dialogNewNote();
+    if (!name.isEmpty()) {
+        NM::Note &n = NM::NotesManager::getInstance().getNewNVideo();
+        n.setTitle(name);
+        n.setModified();
+        saveWork();
+        createListNotes();
+    }
+}
+
+void MainWindow::dialogNewAudio() {
+    QString name = dialogNewNote();
+    if (!name.isEmpty()) {
+        NM::Note &n = NM::NotesManager::getInstance().getNewNAudio();
+        n.setTitle(name);
+        n.setModified();
+        saveWork();
+        createListNotes();
+    }
+}
+
+void MainWindow::dialogNewDocument() {
+    QString name = dialogNewNote();
+    if (!name.isEmpty()) {
+        NM::Note &n = NM::NotesManager::getInstance().getNewDocument();
+        n.setTitle(name);
+        n.setModified();
+        saveWork();
+        createListNotes();
+    }
 }

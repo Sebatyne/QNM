@@ -10,6 +10,7 @@
 #include <QString>
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include <QInputDialog>
 #include "NotesManager.h"
 
 
@@ -26,6 +27,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots :
+    void saveWork();
+    void dialogNewArticle();
+    void dialogNewImage();
+    void dialogNewVideo();
+    void dialogNewAudio();
+    void dialogNewDocument();
+    QString dialogNewNote();
     
 private:
     Ui::MainWindow *ui;

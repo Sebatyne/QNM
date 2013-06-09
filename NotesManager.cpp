@@ -237,6 +237,25 @@ namespace NM {
         return *na;
     }
 
+    Note &NotesManager::getNewNImage()
+    {
+        Note &na = getNewNote("NImage");
+        notes<<&na;
+        return na;
+    }
+
+    Note & NotesManager::getNewNAudio() {
+        Note &na = getNewNote("NAudio");
+        notes<<&na;
+        return na;
+    }
+
+    Note & NotesManager::getNewNVideo() {
+        Note &na = getNewNote("NVideo");
+        notes<<&na;
+        return na;
+    }
+
     void NotesManager::save(const Note * note) const {
         QFile fd(workspace.path() + "/" + QString::number(note->getId()));
         fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);

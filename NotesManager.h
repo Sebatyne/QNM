@@ -46,6 +46,10 @@ namespace NM {
         Note & getNewNote(const QString & fact);
         Note & getNewNArticle();
         Note & getNewDocument();
+        Note & getNewNImage();
+        Note & getNewNAudio();
+        Note & getNewNVideo();
+
 
         void save(const Note * note) const;
         void saveWorkspace();
