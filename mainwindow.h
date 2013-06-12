@@ -11,14 +11,17 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QInputDialog>
+#include <QListWidgetItem>
+#include <QVBoxLayout>
 #include "NotesManager.h"
+#include "Article_modif.h"
 
 
 namespace Ui {
 class MainWindow;
 }
 
-class QNMStandardItem;
+class QNMListWidgetItem;
 
 class MainWindow : public QMainWindow
 {
@@ -36,6 +39,7 @@ private slots :
     void dialogNewAudio();
     void dialogNewDocument();
     QString dialogNewNote();
+    void viewItem(QListWidgetItem *wi);
     
 private:
     Ui::MainWindow *ui;
@@ -43,17 +47,13 @@ private:
     QStandardItem *parentItem;
 
     void createListNotes();
-    QStandardItem* getQNMStandardDocument(NM::Document *doc);
+    //QStandardItem* getQNMStandardDocument(NM::Document *doc);
 
 };
 
-class QNMStandardItem : public QStandardItem {
+class QNMListWidgetItem : public QListWidgetItem {
 public :
-    QNMStandardItem() : QStandardItem() {}
-    QNMStandardItem(const QString & text) : QStandardItem (text) {}
-    QNMStandardItem(const QIcon & icon, const QString & text) : QStandardItem (icon,text ) {}
-    QNMStandardItem(int rows, int columns = 1) : QStandardItem (rows,columns) {}
-
+    QNMListWidgetItem (const QString & text, QListWidget *parent = 0, int type = Type) : QListWidgetItem(text, parent, type) {}
     void setId(unsigned int i) {id = i;}
     unsigned int getId () const {return id;}
 private :

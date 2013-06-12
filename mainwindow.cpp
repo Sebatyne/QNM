@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNewVideo,SIGNAL(triggered()), this, SLOT(dialogNewVideo()));
     connect(ui->actionNewImage,SIGNAL(triggered()), this, SLOT(dialogNewImage()));
     connect(ui->actionNewAudio,SIGNAL(triggered()), this, SLOT(dialogNewAudio()));
+
+    connect(ui->tree, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
 }
 
 MainWindow::~MainWindow()
@@ -36,34 +38,15 @@ void MainWindow::saveWork() {
     NM::NotesManager::getInstance().saveWorkspace();
     //NM::NotesManager::releaseInstance();
 }
-/*
-void MainWindow::createListNotes() {
-    arborescence = new QStandardItemModel;
-    parentItem = arborescence->invisibleRootItem();
-
-    for(NM::NotesManager::Iterator i = NM::NotesManager::getInstance().begin();
-            i != NM::NotesManager::getInstance().end(); i++) {
-        if ((*i)->getType() == NM::Note::Document) {
-            parentItem->appendRow( getQNMStandardDocument(dynamic_cast<NM::Document*>(*i)) );
-        }
-        else {
-            QNMStandardItem *item = new QNMStandardItem((*i)->getTitle());
-            item->setEditable(false);
-            item->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
-            item->setId((*i)->getId());
-            parentItem->appendRow(item);
-        }
-    }
-
-    ui->tree->setModel(arborescence);
-}*/
 
 void MainWindow::createListNotes() {
     ui->tree->clear();
 
     for(NM::NotesManager::Iterator i = NM::NotesManager::getInstance().begin();
             i != NM::NotesManager::getInstance().end(); i++) {
-        QListWidgetItem *n = new QListWidgetItem((*i)->getTitle(), ui->tree);
+        QNMListWidgetItem *n = new QNMListWidgetItem((*i)->getTitle(), ui->tree);
+        n->setId((*i)->getId());
+
         if ((*i)->getType() == NM::Note::Document)
             n->setIcon(QIcon(QPixmap(QString(":/icons/folder.png"))));
         else if ((*i)->getType() == NM::Note::NVideo)
@@ -77,6 +60,7 @@ void MainWindow::createListNotes() {
     }
 }
 
+/*
 QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
     QNMStandardItem *item = new QNMStandardItem(doc->getTitle());
     item->setEditable(false);
@@ -98,6 +82,7 @@ QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
 
     return item;
 }
+*/
 
 QString MainWindow::dialogNewNote() {
     bool ok = false;
@@ -161,3 +146,21 @@ void MainWindow::dialogNewDocument() {
         createListNotes();
     }
 }
+
+void MainWindow::viewItem(QListWidgetItem *wi) {
+    if (ui->tab_editor->layout()) {
+        QLayoutItem *child;
+        while( (child = ui->tab_editor->layout()->takeAt(0)) )  {
+            ui->tab_editor->layout()->removeItem( child );
+            delete child->widget();
+            delete child;
+         }
+    } else {
+        QVBoxLayout *lay = new QVBoxLayout();
+        ui->tab_editor->setLayout(lay);
+    }
+
+    Article_modif *am = new Article_modif(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
+    ui->tab_editor->layout()->addWidget(am);
+}
+

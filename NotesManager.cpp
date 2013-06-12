@@ -257,6 +257,7 @@ namespace NM {
 
     void NotesManager::save(const Note * note) const {
         QFile fd(workspace.path() + "/" + QString::number(note->getId()));
+        qDebug() << "Note sauvée dans :" << workspace.path() + "/" + QString::number(note->getId()) << "\n";
         fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
 
         QTextStream in(&fd);

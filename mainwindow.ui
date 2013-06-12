@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>938</width>
-    <height>649</height>
+    <width>757</width>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,6 +65,11 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab_editor">
+       <property name="font">
+        <font>
+         <family>Cantarell</family>
+        </font>
+       </property>
        <attribute name="title">
         <string>Editor</string>
        </attribute>
@@ -93,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>938</width>
+     <width>757</width>
      <height>24</height>
     </rect>
    </property>

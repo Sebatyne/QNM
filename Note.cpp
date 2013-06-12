@@ -31,6 +31,9 @@ namespace NM {
     }
 
     void NArticle::load() {
+        if (loaded == true)
+            return;
+
         NotesManager& nm = NotesManager::getInstance();
 
         QFile fd(nm.getWorkspace().path() + "/" + QString::number(id));
@@ -43,6 +46,8 @@ namespace NM {
         while (!fd.atEnd()) {
             text += fd.readLine();
         }
+
+        fd.close();
 
         loaded = true;
     }
@@ -117,6 +122,8 @@ namespace NM {
             qDebug() << "chargement de la note d'id : " << idNote << "\n";
             notes<<nm.getNote(idNote);
         }
+
+        fd.close();
     }
 
     void Document::log() const {

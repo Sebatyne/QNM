@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     NoteFactory.cpp \
     ArticleWidget.cpp \
     NotesExporter.cpp \
-    NUtils.cpp
+    NUtils.cpp \
+    Article_modif.cpp
 
 HEADERS  += mainwindow.h \
     NotesManager.h \
@@ -27,10 +28,11 @@ HEADERS  += mainwindow.h \
     NoteFactory.h \
     ArticleWidget.h \
     NotesExporter.h \
-    NUtils.h
+    NUtils.h \
+    Article_modif.h
 
 FORMS    += mainwindow.ui \
-    ArticleWidget.ui
+    Article_modif.ui
 
 RESOURCES += \
     icons/icons.qrc

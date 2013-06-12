@@ -75,7 +75,7 @@ namespace NM {
         /**
          * \brief Permet de modifier le titre de la note
         */
-        void setTitle (const QString & te) {title = te;}
+        void setTitle (const QString & te) {modified = true; title = te;}
 
         /**
          * \brief Permet d'indiquer que les informations de la note ont été chargées en mémoire
@@ -166,7 +166,7 @@ namespace NM {
          * \brief Permet de modifier le titre de l'article
          * \param txt : Texte de l'article
         */
-        void setText (const QString & txt) {text = txt;}
+        void setText (const QString & txt) {modified = true; text = txt;}
 
         QString toText () const;
         void load();
