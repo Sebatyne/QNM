@@ -5,6 +5,7 @@
 #include <QMap>
 
 #include "Note.h"
+#include "NUtils.h"
 
 namespace NM{
     class NotesExporter
@@ -12,6 +13,12 @@ namespace NM{
     protected:
         Note * ExportedNote;
         NotesExporter(Note * ExportedNote) : ExportedNote(ExportedNote){}
+        bool delimitParts;
+        bool displayDate;
+
+        void setDisplayDate(bool DisplayDate){displayDate = DisplayDate;}
+        void setDelimitParts(bool DelimitParts){delimitParts = DelimitParts;}
+
     public:
         virtual QString getRawExport() = 0;
 
@@ -19,15 +26,26 @@ namespace NM{
     };
 
     class textNotesExporter : NotesExporter{
+        QString NoteToText(Note * convertedNote, unsigned int TitleLevel);
+        QString ArticleToText(NArticle * ConvertedArticle, unsigned int titleLevel);
+        QString ImageToText(NImage * ConvertedImage, unsigned int titleLevel);
+        QString AudioToText(NAudio * ConvertedAudio, unsigned int titleLevel);
+        QString VideoToText(NVideo * ConvertedVideo, unsigned int titleLevel);
+        QString MediaToText(NMedia * NoteMedia, unsigned int titleLevel);
     public:
-        textNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){}
+        textNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
+            delimitParts = true;
+            displayDate = false;
+        }
         QString getRawExport();
     };
 
     class HTMLNotesExporter : NotesExporter{
         QString spreadSheet;
     public:
-        HTMLNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){}
+        HTMLNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
+
+        }
 
         void setSpreadSheet(QString & css);
         QString getSpreadSheet(){return spreadSheet;}
@@ -59,18 +77,14 @@ namespace NM{
 
         void setIgnoreAudio(bool IgnoreAudio){ignoreAudio = IgnoreAudio;}
         void setIgnoreVideo(bool IgnoreVideo){ignoreVideo = IgnoreVideo;}
-        void setDisplayDate(bool DisplayDate){displayDate = DisplayDate;}
         void setIgnoreNumerotation(bool IgnoreNumbering){ignoreNumbering = IgnoreNumbering;}
-        void setDelimitParts(bool DelimitParts){delimitParts = DelimitParts;}
 
         QString getRawExport();
     private:
         latexDocType docType;
         bool ignoreAudio;
         bool ignoreVideo;
-        bool displayDate;
         bool ignoreNumbering;
-        bool delimitParts;
 
         QMap <int, QString> titleSize;
 
@@ -79,5 +93,6 @@ namespace NM{
         QString ImageToLatex(NImage * ConvertedImage, unsigned int titleLevel);
         QString AudioToLatex(NAudio * ConvertedAudio, unsigned int titleLevel);
         QString VideoToLatex(NVideo * ConvertedVideo, unsigned int titleLevel);
+        QString MediaToLatex(NMedia * NoteMedia, unsigned int titleLevel);
     };
 }
