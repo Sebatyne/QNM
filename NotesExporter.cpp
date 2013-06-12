@@ -41,14 +41,12 @@ namespace NM{
         {
             NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
             if(tAud){
-                qDebug() << tAud->getDescription() << "\n";
                 latexExport += AudioToLatex(tAud, titleLevel);
             }
         }
         else if(!ignoreVideo && ConvertedNote->getType() == Note::NVideo){
             NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
             if(tVid){
-                qDebug() << tVid->getDescription() << "\n";
                 latexExport += VideoToLatex(tVid, titleLevel);
             }
         }
@@ -132,4 +130,125 @@ namespace NM{
 
         return latexExport;
     }
+
+
+
+    /*class textNotesExporter : NotesExporter{
+    public:
+        textNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){}
+        QString getRawExport();
+    };*/
+
+
+    QString textNotesExporter::NoteToText(Note * ConvertedNote, unsigned int titleLevel){
+        QString textExport;
+        if(ConvertedNote->getType() == Note::Document){
+            Document * tdoc = dynamic_cast<Document*>(ConvertedNote);
+            if(tdoc){
+
+                textExport += "\n";
+
+                if(titleLevel > 0){
+                    textExport += NUtils::repeat(titleLevel, "\t") + "[" + tdoc->getTitle() + "]\n\n";
+                }
+
+                Document::Iterator it = tdoc->begin();
+
+                for(; it != tdoc->end(); it++){
+                    textExport += NoteToText(*it, titleLevel + 1);
+                }
+
+                if(delimitParts){
+                    textExport += "_________________________________________________________________________________\n\n";
+                }
+
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NArticle)
+        {
+            NArticle * tArt = dynamic_cast<NArticle*>(ConvertedNote);
+            if(tArt){
+                textExport += ArticleToText(tArt, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NImage){
+            NImage * tIm = dynamic_cast<NImage*>(ConvertedNote);
+            if(tIm){
+                textExport += ImageToText(tIm, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NAudio)
+        {
+            NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
+            if(tAud){
+                textExport += AudioToText(tAud, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NVideo){
+            NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
+            if(tVid){
+                textExport += VideoToText(tVid, titleLevel);
+            }
+        }
+        return textExport;
+    }
+
+    QString textNotesExporter::ArticleToText(NArticle * ConvertedArticle, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedArticle->getTitle() + "]\n";
+        }
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedArticle->getText() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::ImageToText(NImage * ConvertedImage, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedImage->getTitle() + "]\n\n";
+        }
+        textExport += NUtils::repeat(titleLevel, "\t") + "Voir " + ConvertedImage->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedImage->getDescription() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::AudioToText(NAudio * ConvertedAudio, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedAudio->getTitle() + "]\n\n";
+        }
+
+        textExport += NUtils::repeat(titleLevel, "\t") + "Ecouter " + ConvertedAudio->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedAudio->getDescription() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::VideoToText(NVideo * ConvertedVideo, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedVideo->getTitle() + "]\n\n";
+        }
+
+        textExport += NUtils::repeat(titleLevel, "\t") + "Regarder " + ConvertedVideo->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedVideo->getDescription() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::getRawExport(){
+        QString textExport = NUtils::repeat(5, "\t") + " ********** " +ExportedNote->getTitle() + " **********\n";
+        if(displayDate){
+            textExport += "Le @@@@@@@@ \n\n"; //Remplacer par la date
+        }
+        textExport += "\n\n";
+
+        textExport += NoteToText(this->ExportedNote, 0);
+
+        return textExport;
+    }
+
+
 }
