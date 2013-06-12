@@ -55,7 +55,7 @@ namespace NM {
         void saveWorkspace();
 
         void createNoteFromNode(const QDomNode n);
-        void createDocFromNode(const QDomNode n);
+        //void createDocFromNode(const QDomNode n);
 
         class Iterator {
                 friend class NotesManager;

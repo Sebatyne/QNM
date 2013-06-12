@@ -36,7 +36,7 @@ void MainWindow::saveWork() {
     NM::NotesManager::getInstance().saveWorkspace();
     //NM::NotesManager::releaseInstance();
 }
-
+/*
 void MainWindow::createListNotes() {
     arborescence = new QStandardItemModel;
     parentItem = arborescence->invisibleRootItem();
@@ -56,6 +56,25 @@ void MainWindow::createListNotes() {
     }
 
     ui->tree->setModel(arborescence);
+}*/
+
+void MainWindow::createListNotes() {
+    ui->tree->clear();
+
+    for(NM::NotesManager::Iterator i = NM::NotesManager::getInstance().begin();
+            i != NM::NotesManager::getInstance().end(); i++) {
+        QListWidgetItem *n = new QListWidgetItem((*i)->getTitle(), ui->tree);
+        if ((*i)->getType() == NM::Note::Document)
+            n->setIcon(QIcon(QPixmap(QString(":/icons/folder.png"))));
+        else if ((*i)->getType() == NM::Note::NVideo)
+            n->setIcon(QIcon(QPixmap(QString(":/icons/video.png"))));
+        else if ((*i)->getType() == NM::Note::NAudio)
+            n->setIcon(QIcon(QPixmap(QString(":/icons/audio.png"))));
+        else if ((*i)->getType() == NM::Note::NImage)
+            n->setIcon(QIcon(QPixmap(QString(":/icons/image.png"))));
+        else
+            n->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
+    }
 }
 
 QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {

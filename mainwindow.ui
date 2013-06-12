@@ -44,7 +44,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeView" name="tree">
+        <widget class="QListWidget" name="tree">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -54,9 +54,6 @@
          <property name="textElideMode">
           <enum>Qt::ElideRight</enum>
          </property>
-         <attribute name="headerVisible">
-          <bool>false</bool>
-         </attribute>
         </widget>
        </item>
       </layout>

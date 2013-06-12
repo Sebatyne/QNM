@@ -57,7 +57,7 @@ namespace NM {
     Document::Document(unsigned int i, const QString &te)
         : Note(i, te)
     {
-        loaded = true;
+        loaded = false;
         log();
     }
 
@@ -91,7 +91,7 @@ namespace NM {
     }
 
     void Document::load() {
-        /*if (this->loaded) { return; }
+        if (this->loaded) { return; }
 
         loaded = true;
 
@@ -116,7 +116,7 @@ namespace NM {
             idNote = idS.toUInt();
             qDebug() << "chargement de la note d'id : " << idNote << "\n";
             notes<<nm.getNote(idNote);
-        }*/
+        }
     }
 
     void Document::log() const {

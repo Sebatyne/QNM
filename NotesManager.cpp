@@ -87,12 +87,11 @@ namespace NM {
             //parcours des noeuds
             while (!n.isNull()) {
                 //on teste si note
-                if (n.nodeName() == "note") {
-                    createNoteFromNode(n);
-                }
+                createNoteFromNode(n);
                 n = n.nextSibling();
             }
 
+            /*
             n = docElem.firstChild();
             while (!n.isNull()) {
                 if(n.nodeName() == "document") {
@@ -100,7 +99,7 @@ namespace NM {
                         createDocFromNode(n);
                 }
                     n = n.nextSibling();
-            }
+            }*/
 
         //ancienne solution chargeant le workspace en fonction des fichiers présents
         /*workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot | QDir::Readable | QDir::Writable);
@@ -144,7 +143,6 @@ namespace NM {
 
         while (!n2.isNull()) {
             QDomElement e = n2.toElement();
-            //qDebug() << e.text();
 
             if (!e.isNull()) {
                 if (e.tagName() == QString("title")) {
@@ -163,6 +161,7 @@ namespace NM {
         notes << factories[type]->buildNote(id, title);
     }
 
+/*
     void NotesManager::createDocFromNode(const QDomNode n) {
         QDomNode n2 = n.firstChild();
 
@@ -197,7 +196,7 @@ namespace NM {
 
         notes << d;
     }
-
+*/
     Note* NotesManager::getNote (unsigned int id) {
         QSet<Note*>::iterator i;
         for (i = notes.begin(); i != notes.end(); ++i) {
@@ -272,48 +271,23 @@ namespace NM {
         doc.appendChild(root);
 
         for (Iterator it = begin(); it != end(); it++) {
-            if ((*it)->getType() != NM::Note::Document) {
-                QDomElement node = doc.createElement("note");
-                root.appendChild(node);
+            QDomElement node = doc.createElement("note");
+            root.appendChild(node);
 
-                QDomElement tag = doc.createElement("type");
-                node.appendChild(tag);
-                QDomText t = doc.createTextNode((*it)->getTypeText());
-                tag.appendChild(t);
+            QDomElement tag = doc.createElement("type");
+            node.appendChild(tag);
+            QDomText t = doc.createTextNode((*it)->getTypeText());
+            tag.appendChild(t);
 
-                tag = doc.createElement("id");
-                node.appendChild(tag);
-                t = doc.createTextNode(QString::number((*it)->getId()));
-                tag.appendChild(t);
+            tag = doc.createElement("id");
+            node.appendChild(tag);
+            t = doc.createTextNode(QString::number((*it)->getId()));
+            tag.appendChild(t);
 
-                tag = doc.createElement("title");
-                node.appendChild(tag);
-                t = doc.createTextNode((*it)->getTitle());
-                tag.appendChild(t);
-            }
-            //s'il s'agit d'un document
-            else {
-                QDomElement node = doc.createElement("document");
-                root.appendChild(node);
-
-                QDomElement tag = doc.createElement("id");
-                node.appendChild(tag);
-                QDomText t = doc.createTextNode(QString::number((*it)->getId()));
-                tag.appendChild(t);
-
-                tag = doc.createElement("title");
-                node.appendChild(tag);
-                t = doc.createTextNode((*it)->getTitle());
-                tag.appendChild(t);
-
-                for(NM::Document::Iterator doc_it = dynamic_cast<NM::Document*>((*it))->begin();
-                    doc_it != dynamic_cast<NM::Document*>((*it))->end(); doc_it++) {
-                        tag = doc.createElement("sous-note");
-                        node.appendChild(tag);
-                        t = doc.createTextNode(QString::number((*doc_it)->getId()));
-                        tag.appendChild(t);
-                }
-            }
+            tag = doc.createElement("title");
+            node.appendChild(tag);
+            t = doc.createTextNode((*it)->getTitle());
+            tag.appendChild(t);
         }
 
         QFile fd(workspace.path() + "/" + workspace.dirName());
