@@ -47,10 +47,20 @@ namespace NM {
 
     NotesManager::~NotesManager(){
         //delete sur les factories, les notes si elles ne sont pas enregistrées...
+        //save des docs avant les notes, sinon problème
         for(Iterator i = begin(); i != end(); i++) {
+            if ((*i)->getType() == Note::Document) {
             if ((*i)->isModified())
                 save(*i);
             delete *i;
+            }
+        }
+        for(Iterator i = begin(); i != end(); i++) {
+            if ((*i)->getType() != Note::Document) {
+            if ((*i)->isModified())
+                save(*i);
+            delete *i;
+            }
         }
 
         saveWorkspace();
@@ -256,11 +266,15 @@ namespace NM {
     }
 
     void NotesManager::save(const Note * note) const {
+        if (!note->isModified())
+            return;
+
         QFile fd(workspace.path() + "/" + QString::number(note->getId()));
         qDebug() << "Note sauvée dans :" << workspace.path() + "/" + QString::number(note->getId()) << "\n";
         fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
 
         QTextStream in(&fd);
+        qDebug() << note->toText();
         in << note->toText();
 
         fd.close();

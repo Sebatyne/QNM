@@ -1,18 +1,18 @@
 #include "Article_modif.h"
 #include "ui_Article_modif.h"
 
-Article_modif::Article_modif(unsigned int id, QWidget *parent) :
+Article_modif::Article_modif(NM::Note *n, QWidget *parent) :
     QWidget(parent),
+    note(dynamic_cast<NM::NArticle*>(n)),
     ui(new Ui::Article_modif)
 {
     ui->setupUi(this);
 
-    note = dynamic_cast<NM::NArticle*>(NM::NotesManager::getInstance().getNote(id));
     note->load();
     ui->title_note->setText(note->getTitle());
     ui->text_note->setText(note->getText());
 
-    connect(ui->save_button, SIGNAL(clicked()), this, SLOT(save_note()));
+    connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
 }
 
 Article_modif::~Article_modif()

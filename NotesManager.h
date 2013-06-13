@@ -37,6 +37,8 @@ namespace NM {
         const QDir getWorkspace () const {return workspace;}
         Note * getNote(unsigned int id);
 
+        const QSet<Note*> returnSetNotes() const {return notes;}
+
         //load un workspace par défaut situé dans ../Ressources/workspace1
         void loadWorkspace (QString fold);
 

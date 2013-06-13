@@ -85,7 +85,7 @@ namespace NM {
         /**
          * \brief Permet d'indiquer que la note a été modifiée
         */
-        void setModified () {modified = true;}
+        void setModified (bool m = true) {modified = m;}
 
         /**
          * \brief Renvoie la note au format textuel
@@ -286,6 +286,8 @@ namespace NM {
 
         Note::noteType getType() const {return Note::Document;}
         QString getTypeText() const {return QString("Document");}
+
+        void clear() {notes.clear(); modified = true;}
 
         /**
          * \brief Renvoie un itérateur sur la première note de la liste

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "NotesManager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNewAudio,SIGNAL(triggered()), this, SLOT(dialogNewAudio()));
 
     connect(ui->tree, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
+    connect(ui->tree, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
 }
 
 MainWindow::~MainWindow()
@@ -59,30 +59,6 @@ void MainWindow::createListNotes() {
             n->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
     }
 }
-
-/*
-QStandardItem* MainWindow::getQNMStandardDocument(NM::Document *doc) {
-    QNMStandardItem *item = new QNMStandardItem(doc->getTitle());
-    item->setEditable(false);
-    item->setIcon(QIcon(QPixmap(QString(":/icons/folder.png"))));
-    item->setId(doc->getId());
-
-    for(NM::Document::Iterator i = doc->begin(); i != doc->end(); i++) {
-        if ((*i)->getType() == NM::Note::Document) {
-            item->appendRow( getQNMStandardDocument(dynamic_cast<NM::Document*>(*i)) );
-        }
-        else {
-            QNMStandardItem *item2 = new QNMStandardItem((*i)->getTitle());
-            item2->setEditable(false);
-            item2->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
-            item2->setId((*i)->getId());
-            item->appendRow(item2);
-        }
-    }
-
-    return item;
-}
-*/
 
 QString MainWindow::dialogNewNote() {
     bool ok = false;
@@ -148,6 +124,7 @@ void MainWindow::dialogNewDocument() {
 }
 
 void MainWindow::viewItem(QListWidgetItem *wi) {
+    ui->tabWidget->setCurrentIndex(0);
     if (ui->tab_editor->layout()) {
         QLayoutItem *child;
         while( (child = ui->tab_editor->layout()->takeAt(0)) )  {
@@ -160,7 +137,14 @@ void MainWindow::viewItem(QListWidgetItem *wi) {
         ui->tab_editor->setLayout(lay);
     }
 
-    Article_modif *am = new Article_modif(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
-    ui->tab_editor->layout()->addWidget(am);
+    NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
+    QWidget *wid = new QWidget();
+
+    if (n->getType() == NM::Note::NArticle)
+        wid = new Article_modif(n);
+    else if (n->getType() == NM::Note::Document)
+        wid = new Document_modif(n);
+
+    ui->tab_editor->layout()->addWidget(wid);
 }
 

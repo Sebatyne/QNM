@@ -62,34 +62,33 @@ namespace NM {
     Document::Document(unsigned int i, const QString &te)
         : Note(i, te)
     {
-        loaded = false;
         log();
     }
 
     void Document::addNote(Note *n) {
+        modified = true;
         notes << n;
     }
 
     void Document::operator <<(Note *n) {
-        notes << n;
+        addNote(n);
     }
 
     void Document::removeNote(Note *n) {
+        modified = true;
         notes.removeOne(n);
     }
 
     QString Document::toText () const {
         QString str;
 
-        str = QString::number(id)
+        str = QString::number(id) + "\n"
                 + "Document\n"
                 + title + "\n\n";
 
-        //  --------- il faut encore ajouter les notes ----------
-
         QListIterator<Note*> i(notes);
          while (i.hasNext()) {
-             str += QString::number(i.next()->getId());
+             str += QString::number(i.next()->getId(), 10) + "\n";
          }
 
         return str;
@@ -113,6 +112,7 @@ namespace NM {
         fd.readLine(); //on passe le saut de ligne
 
         unsigned int idNote;
+        qDebug() << "Attention chargememt des notes";
 
         while (!fd.atEnd()) {
             //----------récupérer le pointeur sur la bonne note

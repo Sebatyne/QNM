@@ -13,16 +13,15 @@ class Article_modif : public QWidget
     Q_OBJECT
     
 public:
-    explicit Article_modif(unsigned int id, QWidget *parent = 0);
+    explicit Article_modif(NM::Note* n, QWidget *parent = 0);
     ~Article_modif();
 
 private slots :
     void save_note();
 
 private:
-    Ui::Article_modif *ui;
-    unsigned int note_id;
     NM::NArticle *note;
+    Ui::Article_modif *ui;
 };
 
 #endif // ARTICLE_MODIF_H

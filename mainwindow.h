@@ -11,11 +11,12 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QInputDialog>
-#include <QListWidgetItem>
 #include <QVBoxLayout>
+#include <QWidget>
 #include "NotesManager.h"
+#include "QNMListWidgetItem.h"
 #include "Article_modif.h"
-
+#include "Document_modif.h"
 
 namespace Ui {
 class MainWindow;
@@ -51,13 +52,6 @@ private:
 
 };
 
-class QNMListWidgetItem : public QListWidgetItem {
-public :
-    QNMListWidgetItem (const QString & text, QListWidget *parent = 0, int type = Type) : QListWidgetItem(text, parent, type) {}
-    void setId(unsigned int i) {id = i;}
-    unsigned int getId () const {return id;}
-private :
-    unsigned int id;
-};
+
 
 #endif // MAINWINDOW_H
