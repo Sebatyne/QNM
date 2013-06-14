@@ -21,6 +21,7 @@ Article_modif::~Article_modif()
 }
 
 void Article_modif::save_note() {
+    note->setTitle(ui->title_note->text());
     note->setText(ui->text_note->toPlainText());
     NM::NotesManager::getInstance().save(note);
 }

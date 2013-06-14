@@ -38,8 +38,8 @@ void Document_modif::save_note() {
     for (NM::Document::Iterator i = temp_note->begin(); i != temp_note->end(); i++) {
         note->addNote(*i);
     }
+    note->setTitle(ui->title_note->text());
     NM::NotesManager::getInstance().save(note);
-    note->setModified(false);
 }
 
 void Document_modif::init_contained_notes() {

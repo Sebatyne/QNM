@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     NUtils.cpp \
     Article_modif.cpp \
     Document_modif.cpp \
-    QNMListWidgetItem.cpp
+    QNMListWidgetItem.cpp \
+    Image_modif.cpp
 
 HEADERS  += mainwindow.h \
     NotesManager.h \
@@ -33,11 +34,13 @@ HEADERS  += mainwindow.h \
     NUtils.h \
     Article_modif.h \
     Document_modif.h \
-    QNMListWidgetItem.h
+    QNMListWidgetItem.h \
+    Image_modif.h
 
 FORMS    += mainwindow.ui \
     Article_modif.ui \
-    Document_modif.ui
+    Document_modif.ui \
+    Image_modif.ui
 
 RESOURCES += \
     icons/icons.qrc

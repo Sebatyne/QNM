@@ -152,6 +152,7 @@ namespace NM {
         fd.readLine(); //on passe le saut de ligne
 
         url = fd.readLine();
+        url.chop(1);
 
         while(!fd.atEnd()){
             description += fd.readLine();
@@ -166,7 +167,7 @@ namespace NM {
         str += "NAudio\n";
         str += title + "\n\n";
         str += url + "\n";
-        str += description + "\n";
+        str += description;
 
         return str;
     }

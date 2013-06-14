@@ -144,6 +144,8 @@ void MainWindow::viewItem(QListWidgetItem *wi) {
         wid = new Article_modif(n);
     else if (n->getType() == NM::Note::Document)
         wid = new Document_modif(n);
+    else if (n->getType() == NM::Note::NImage)
+        wid = new Image_modif(n);
 
     ui->tab_editor->layout()->addWidget(wid);
 }

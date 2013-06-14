@@ -325,7 +325,7 @@ namespace NM {
          * \brief Permet de modifier l'URL du media
          * \param url : Url du media
         */
-        void setUrl(const QString & url);
+        void setUrl(const QString & u) {modified = true; url = u;}
 
         /**
          * \brief Renvoie la description associée au media
@@ -336,7 +336,7 @@ namespace NM {
          * \brief Permet de la description associée au media
          * \param description : Description du media
         */
-        void setDescription(QString const & description);
+        void setDescription(QString const & desc) {modified = true; description = desc;}
 
         virtual QString toText() const = 0;
         virtual Note::noteType getType() const = 0;

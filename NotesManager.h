@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QtXml>
+#include <QPalette>
 #include "Note.h"
 #include "NoteFactory.h"
 
@@ -53,7 +54,7 @@ namespace NM {
         Note & getNewNVideo();
 
 
-        void save(const Note * note) const;
+        void save(Note *note) const;
         void saveWorkspace();
 
         void createNoteFromNode(const QDomNode n);

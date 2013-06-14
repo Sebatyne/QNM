@@ -265,7 +265,7 @@ namespace NM {
         return na;
     }
 
-    void NotesManager::save(const Note * note) const {
+    void NotesManager::save(Note * note) const {
         if (!note->isModified())
             return;
 
@@ -278,6 +278,8 @@ namespace NM {
         in << note->toText();
 
         fd.close();
+
+        note->setModified(false);
     }
 
     void NotesManager::saveWorkspace() {

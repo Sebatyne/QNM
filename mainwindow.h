@@ -17,6 +17,7 @@
 #include "QNMListWidgetItem.h"
 #include "Article_modif.h"
 #include "Document_modif.h"
+#include "Image_modif.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,13 +42,13 @@ private slots :
     void dialogNewDocument();
     QString dialogNewNote();
     void viewItem(QListWidgetItem *wi);
+    void createListNotes();
     
 private:
     Ui::MainWindow *ui;
     QStandardItemModel *arborescence;
     QStandardItem *parentItem;
 
-    void createListNotes();
     //QStandardItem* getQNMStandardDocument(NM::Document *doc);
 
 };

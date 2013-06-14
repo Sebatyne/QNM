@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>481</height>
+    <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
   </property>
   <property name="dockNestingEnabled">
    <bool>false</bool>
@@ -53,6 +56,9 @@
          </property>
          <property name="textElideMode">
           <enum>Qt::ElideRight</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
