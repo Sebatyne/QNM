@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "Note.h"
+#include "mainwindow.h"
 
 namespace Ui {
 class Article_modif;

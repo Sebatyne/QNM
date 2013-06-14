@@ -8,6 +8,7 @@
 #include <QList>
 #include "Note.h"
 #include "QNMListWidgetItem.h"
+#include "mainwindow.h"
 
 class Note;
 

@@ -30,8 +30,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    static MainWindow* getInstance();
+    static void releaseIntance();
 
 private slots :
     void saveWork();
@@ -49,8 +51,9 @@ private:
     QStandardItemModel *arborescence;
     QStandardItem *parentItem;
 
-    //QStandardItem* getQNMStandardDocument(NM::Document *doc);
+    static MainWindow *mw;
 
+    explicit MainWindow(QWidget *parent = 0);
 };
 
 

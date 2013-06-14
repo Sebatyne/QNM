@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QPixmap>
 #include "Note.h"
+#include "mainwindow.h"
 
 namespace Ui {
 class Image_modif;

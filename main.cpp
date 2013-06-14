@@ -16,11 +16,11 @@ int main(int argc, char *argv[]) {
 
     qDebug() << nm.getNbNotes() <<endl;
     
-    MainWindow w;
+    MainWindow *w = MainWindow::getInstance();
 
     nm.saveWorkspace();
 
-    w.show();
+    w->show();
 
     //nm.releaseInstance();
 

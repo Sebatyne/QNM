@@ -13,8 +13,10 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
     ui->url_line->setText(note->getUrl());
 
     ui->preview->show();
+    ui->description_line->clear();
 
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
     connect(ui->find_button, SIGNAL(pressed()), this, SLOT(open_image()));
 
     ui->preview->setMinimumWidth(this->width()/2);
@@ -25,7 +27,7 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
     }
     if (!note->getDescription().isEmpty()) {
         ui->description_line->clear();
-        ui->description_line->insert(note->getDescription());
+        ui->description_line->setText(note->getDescription());
     }
 
 }

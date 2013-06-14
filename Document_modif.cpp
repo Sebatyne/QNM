@@ -26,6 +26,7 @@ Document_modif::Document_modif(NM::Note *n, QWidget *parent) :
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
     connect(ui->contained_notes, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(removeNoteFromDoc()));
     connect(ui->other_notes, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(addNoteToDoc()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 }
 
 Document_modif::~Document_modif()

@@ -1,6 +1,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+MainWindow *MainWindow::mw = 0;
+
+MainWindow * MainWindow::getInstance() {
+    if (mw == 0)
+        mw = new MainWindow();
+    return mw;
+}
+
+void MainWindow::releaseIntance() {
+    if (mw != 0)
+        delete mw;
+    mw = 0;
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
