@@ -94,7 +94,7 @@ namespace NM {
     //----------------VideoFactory----------------
 
     Note * VideoFactory::buildNote(const unsigned int id, const QString &title){
-        return new NImage(id, title);
+        return new NVideo(id, title);
     }
 
     Note * VideoFactory::buildNewNote(const QString &title){

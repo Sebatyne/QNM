@@ -11,9 +11,8 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
     note->load();
     ui->title_note->setText(note->getTitle());
     ui->url_line->setText(note->getUrl());
-
-    ui->preview->show();
     ui->description_line->clear();
+    ui->description_line->setText(note->getDescription().trimmed());
 
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
@@ -25,11 +24,6 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
         pix = QPixmap(note->getUrl());
         showImage();
     }
-    if (!note->getDescription().isEmpty()) {
-        ui->description_line->clear();
-        ui->description_line->setText(note->getDescription());
-    }
-
 }
 
 Image_modif::~Image_modif()
@@ -47,6 +41,7 @@ void Image_modif::save_note() {
 void Image_modif::open_image() {
      ui->url_line->setText(QFileDialog::getOpenFileName(this,
          tr("Open Image"), "/home/~", tr("Image Files (*.png *.jpg *.bmp)")));
+     pix = QPixmap(ui->url_line->text());
      showImage();
 }
 

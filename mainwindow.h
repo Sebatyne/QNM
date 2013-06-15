@@ -18,6 +18,8 @@
 #include "Article_modif.h"
 #include "Document_modif.h"
 #include "Image_modif.h"
+#include "Audio_modif.h"
+#include "Video_modif.h"
 
 namespace Ui {
 class MainWindow;

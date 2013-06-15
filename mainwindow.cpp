@@ -160,6 +160,12 @@ void MainWindow::viewItem(QListWidgetItem *wi) {
         wid = new Document_modif(n);
     else if (n->getType() == NM::Note::NImage)
         wid = new Image_modif(n);
+    else if (n->getType() == NM::Note::NAudio)
+        wid = new Audio_modif(n);
+    else if (n->getType() == NM::Note::NVideo)
+        wid = new Video_modif(n);
+    else
+        return;
 
     ui->tab_editor->layout()->addWidget(wid);
 }
