@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     Image_modif.cpp \
     Audio_modif.cpp \
     Video_modif.cpp \
-    Corbeille_modif.cpp
+    Corbeille_modif.cpp \
+    TagManager.cpp \
+    Tag.cpp
 
 HEADERS  += mainwindow.h \
     NotesManager.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     Image_modif.h \
     Audio_modif.h \
     Video_modif.h \
-    Corbeille_modif.h
+    Corbeille_modif.h \
+    TagManager.h \
+    Tag.h
 
 FORMS    += mainwindow.ui \
     Article_modif.ui \
