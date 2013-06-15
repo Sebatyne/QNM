@@ -3,6 +3,7 @@
 #include <QList>
 #include <QDateTime>
 #include <QMap>
+#include <QDate>
 
 #include "Note.h"
 #include "NUtils.h"
@@ -115,14 +116,39 @@ namespace NM{
     };
 
     class HTMLNotesExporter : NotesExporter{
-        QString spreadSheet;
+        QString NoteToHTML(Note * convertedNote, unsigned int TitleLevel);
+        QString ArticleToHTML(NArticle * ConvertedArticle, unsigned int titleLevel);
+        QString ImageToHTML(NImage * ConvertedImage, unsigned int titleLevel);
+        QString AudioToHTML(NAudio * ConvertedAudio, unsigned int titleLevel);
+        QString VideoToHTML(NVideo * ConvertedVideo, unsigned int titleLevel);
+
+        QString CSS;
     public:
         HTMLNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
+            CSS  = "#content{margin:0 100px 0 100px;}\n";
+            CSS += "body{font-family: \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Arial, \"Lucida Grande\", sans-serif;}\n";
+            CSS += "h1{background-color:#0F374F; color:#FFFFFF; margin:0 0 50px 0; padding:20px}\n";
+            CSS += "h2{background-color:#0F374F; color:#FFFFFF; margin:0 0 20px 0; padding:10px; font-size:15pt}\n";
+            CSS += "h3{background-color:#0F374F; color:#FFFFFF; margin:0 0 20px 0; padding:6px; font-size:12pt}\n";
+            CSS += "h4{color:#0F374F; margin:0 0 20px 0; border-left: 7px solid #0F374F; border-bottom: 2px solid #0F374F; padding:5px; font-size:10pt}\n";
+            CSS += "h5{color:#0F374F; font-weight:bold; border-left: 5px solid #0F374F; padding:5px;}\n";
+            CSS += "h6{color:#0F374F; font-weight:bold; padding:5px;}\n";
+            CSS += "p{text-align: justify; text-justify: newspaper; margin-bottom:30px;}\n";
+            CSS += "p:first-letter{float:left; display:inline-bloc; background-color:#6B214C; padding:2px; margin-right:4px; font-size:13pt; color:#FFFFFF;}\n";
+            CSS += "span{display:inline-block; background-color:#6B214C; color:#FFFFFF; padding: 5px;}\n";
+            CSS += "img{display:block; margin-left:auto; margin-right:auto;}\n";
+            CSS += "legend{display:block; margin-left:auto; margin-right:auto; width:300px; text-align:center; margin-top:7px; margin-bottom:20px;}\n";
+            CSS += "audio{margin-left:auto; margin-right:auto;display:block;}\n";
+            CSS += "video{margin-left:auto; margin-right:auto;display:block;}\n";
+            CSS += ".subnote{margin-left:40px;}\n";
+            CSS += ".hbar{display:block; background-color:#0F374F; height:5px; margin-bottom:30px;}\n";
+            CSS += ".date{font-size:12pt;}\n";
 
+            delimitParts = true;
         }
 
-        void setSpreadSheet(QString & css);
-        QString getSpreadSheet(){return spreadSheet;}
+        void setCSS(const QString & css){CSS = css;}
+        QString getCSS(){return CSS;}
 
         QString getRawExport();
 
