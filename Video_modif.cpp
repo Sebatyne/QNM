@@ -28,9 +28,3 @@ void Video_modif::save_note() {
     note->setDescription(ui->description_line->text());
     NM::NotesManager::getInstance().save(note);
 }
-
-void Video_modif::open_video() {
-    //ui->url_line->setText(QFileDialog::getOpenFileName(this,
-        //tr("Open Image"), "/home/~", tr("Image Files (*.avi *.mpg *.mp4)")));
-    //ui->video_player->play(ui->url_line->text());
-}

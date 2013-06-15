@@ -16,6 +16,16 @@ namespace Ui {
 class Document_modif;
 }
 
+/**
+ * \class Document_modif
+ * \brief Widget de modification d'un document
+ *Widget évolué permettant de modifier les caractéristiques
+ *d'une note de type document.
+ *Il partage une classe mère, héritée par les classes filles,
+ * qui permet s'affiche dans la zone centrale d'une fenêtre
+ */
+
+
 class Document_modif : public QWidget
 {
     Q_OBJECT
@@ -25,6 +35,10 @@ public:
     ~Document_modif();
     
 private slots :
+    /**
+     * \brief Enregistre la note actuellement éditée
+     *Est appelé lors de l'appui sur le bouton d'enregistrement
+    */
     void save_note();
     void addNoteToDoc();
     void removeNoteFromDoc();
