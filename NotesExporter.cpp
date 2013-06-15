@@ -1,261 +1,382 @@
-#pragma once
-
-#include <QList>
-#include <QDateTime>
-#include <QMap>
-#include <QDate>
-
-#include "Note.h"
-#include "NUtils.h"
+#include "NotesExporter.h"
 
 namespace NM{
+    QString LaTexNotesExporter::NoteToLatex(Note * ConvertedNote, unsigned int titleLevel){
+        QString latexExport;
+        (titleLevel > titleSize.size() - 1) ? titleLevel = titleSize.size() - 1 : titleLevel;
+        if(ConvertedNote->getType() == Note::Document){
+            Document * tdoc = dynamic_cast<Document*>(ConvertedNote);
+            if(tdoc){
 
-    /**
-     * \brief Classe définissant le comportement de tous les exporters de notes (Design Pattern Strategy).
-     *
-     * <b>Classe non instanciable</b>
-     */
+                if(titleLevel > 0){
+                    latexExport += "\\" + titleSize[titleLevel] + (!ignoreNumbering ? "" : "*") + "{" + tdoc->getTitle() + "}\n\n";
+                }
 
-    class NotesExporter
-    {
-    protected:
-        Note * ExportedNote;
+                Document::Iterator it = tdoc->begin();
 
-        /**
-         * \brief Constructeur de la classe NotesExporter
-         *
-         * \param ExportedNote : Note à exporter
-         */
-        NotesExporter(Note * ExportedNote) : ExportedNote(ExportedNote){}
-        bool delimitParts;
-        bool displayDate;
+                for(; it != tdoc->end(); it++){
+                    latexExport += NoteToLatex(*it, titleLevel + 1);
+                }
 
-        /**
-         * \brief Permet de définir si la date doit être affichée sur l'export
-         */
-        void setDisplayDate(bool DisplayDate){displayDate = DisplayDate;}
+                if(delimitParts){
+                    latexExport += "\\rule{\\linewidth}{.5pt}\n\n";
+                }
 
-        /**
-         * \brief Définit si la fin d'un document doit être succédé d'une barre horizontale de séparation
-         */
-        void setDelimitParts(bool DelimitParts){delimitParts = DelimitParts;}
-
-    public:
-        /**
-         * \brief Méthode permettant d'obtenir la conversion de la note au format voulu. Ce format dépend de l'implémentation de cette méthode dans les classes filles.
-         */
-        virtual QString getRawExport() = 0;
-
-        /**
-         * \brief Permet de définir la note à exporter
-         * \param ExportedNote : Note à exporter
-         */
-        void setExportedNote(Note * ExportedNote);
-    };
-
-    /**
-     * \class textNotesExporter
-     * \brief Classe permettant d'exporter une note dans un format texte basique.
-     * Implémentation de l'interface NotesExporter
-     */
-    class textNotesExporter : NotesExporter{
-        /**
-         * \brief Méthode (\b privée) permettant de convertir n'importe quel type de note, en une note au format textuel
-         * Cette méthode convertis l'intégralité d'une note en parcourant de manière récursive les documents qu'elle contient.
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant le la note convertie au format textuel
-         */
-        QString NoteToText(Note * convertedNote, unsigned int TitleLevel);
-
-        /**
-         * \brief Permet de convertir un article au format textuel (\b privée)
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant le l'article converti au format textuel
-         */
-        QString ArticleToText(NArticle * ConvertedArticle, unsigned int titleLevel);
-
-        /**
-         * \brief Permet de convertir une Image au format textuel (\b privée)
-         * Puisqu'il est impossible d'afficher une image dans un format textuel brut, un lien vers l'image est fourni lors de la conversion
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant le l'article converti au format textuel
-         */
-        QString ImageToText(NImage * ConvertedImage, unsigned int titleLevel);
-
-        /**
-         * \brief Permet de convertir une note Audio au format textuel (\b privée)
-         * Puisqu'il est impossible de jouer un fichier audio dans un format textuel brut, un lien vers le fichier audio est fourni lors de la conversion
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant la note audio convertie au format textuel
-         */
-        QString AudioToText(NAudio * ConvertedAudio, unsigned int titleLevel);
-
-        /**
-         * \brief Permet de convertir une note Video au format textuel (\b privée)
-         * Puisqu'il est impossible de jouer un fichier video dans un format textuel brut, un lien vers le fichier video est fourni lors de la conversion
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant la note video convertie au format textuel
-         */
-        QString VideoToText(NVideo * ConvertedVideo, unsigned int titleLevel);
-    public:
-        /**
-         * \brief Constructeur de la classe textNotesExporter
-         *
-         * \param ExportedNote : Note à exporter
-         */
-        textNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
-            delimitParts = true;
-            displayDate = false;
+            }
         }
-        QString getRawExport();
-    };
+        else if(ConvertedNote->getType() == Note::NArticle)
+        {
+            NArticle * tArt = dynamic_cast<NArticle*>(ConvertedNote);
+            if(tArt){
+                latexExport += ArticleToLatex(tArt, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NImage){
+            NImage * tIm = dynamic_cast<NImage*>(ConvertedNote);
+            if(tIm){
+                latexExport += ImageToLatex(tIm, titleLevel);
+            }
+        }
+        else if(!ignoreAudio && ConvertedNote->getType() == Note::NAudio)
+        {
+            NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
+            if(tAud){
+                latexExport += AudioToLatex(tAud, titleLevel);
+            }
+        }
+        else if(!ignoreVideo && ConvertedNote->getType() == Note::NVideo){
+            NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
+            if(tVid){
+                latexExport += VideoToLatex(tVid, titleLevel);
+            }
+        }
+        return latexExport;
+    }
 
-    class HTMLNotesExporter : NotesExporter{
-        QString NoteToHTML(Note * convertedNote, unsigned int TitleLevel);
-        QString ArticleToHTML(NArticle * ConvertedArticle, unsigned int titleLevel);
-        QString ImageToHTML(NImage * ConvertedImage, unsigned int titleLevel);
-        QString AudioToHTML(NAudio * ConvertedAudio, unsigned int titleLevel);
-        QString VideoToHTML(NVideo * ConvertedVideo, unsigned int titleLevel);
+    QString LaTexNotesExporter::ArticleToLatex(NArticle * ConvertedArticle, unsigned int titleLevel){
+        QString latexExport = "";
+        if(titleLevel){
+            latexExport += "\\" + titleSize[titleLevel] + (!ignoreNumbering ? "" : "*") + "{" + ConvertedArticle->getTitle() + "}";
+        }
+        latexExport += ConvertedArticle->getText() + "\\\\";
 
-        QString CSS;
+        return latexExport;
+    }
+
+    QString LaTexNotesExporter::ImageToLatex(NImage * ConvertedImage, unsigned int titleLevel){
+        QString latexExport = "";
+        if(titleLevel){
+            latexExport += "\\" + titleSize[titleLevel] + (!ignoreNumbering ? "" : "*") + "{" + ConvertedImage->getTitle() + "}\n\n";
+        }
+        latexExport += "\\begin{figure}[h!]\n";
+        latexExport += "\\centering\n";
+        latexExport += "\\includegraphics[scale = 1]{" + ConvertedImage->getUrl() + "}\n";
+        latexExport += "\\caption{" + ConvertedImage->getDescription() + "}";
+        latexExport += "\\end{figure}\n\n";
+
+        return latexExport;
+    }
+
+    QString LaTexNotesExporter::AudioToLatex(NAudio * ConvertedAudio, unsigned int titleLevel){
+        QString latexExport = "";
+        if(titleLevel){
+            latexExport += "\\" + titleSize[titleLevel] + (!ignoreNumbering ? "" : "*") + "{" + ConvertedAudio->getTitle() + "}\n\n";
+        }
+        latexExport += "\\begin{figure}[h!]\n";
+        latexExport += "\\centering\n";
+        latexExport += "\\includegraphics[scale = 0.5]{aud.jpg}\n";
+        latexExport += "\\caption{Fichier Audio"+ ConvertedAudio->getDescription() +"\\\\Ecouter: "+ ConvertedAudio->getUrl() +"}\n";
+        latexExport += "\\end{figure}\n\n";
+
+        return latexExport;
+    }
+
+    QString LaTexNotesExporter::VideoToLatex(NVideo * ConvertedVideo, unsigned int titleLevel){
+        QString latexExport = "";
+        if(titleLevel){
+            latexExport += "\\" + titleSize[titleLevel] + (!ignoreNumbering ? "" : "*") + "{" + ConvertedVideo->getTitle() + "}\n\n";
+        }
+        latexExport += "\\begin{figure}[h!]\n";
+        latexExport += "\\centering\n";
+        latexExport += "\\includegraphics[scale = 0.5]{vid.jpg}\n";
+        latexExport += "\\caption{Fichier Video : "+ ConvertedVideo->getDescription() +"\\\\Regarder: "+ ConvertedVideo->getUrl() +"}\n";
+        latexExport += "\\end{figure}\n\n";
+
+        return latexExport;
+    }
+
+    QString LaTexNotesExporter::getRawExport(){
+        QString latexExport = "\\documentclass[12pt,a4paper]{article}\n"; // Changer Article par le type de document choisi
+        latexExport += "\\usepackage[latin1]{inputenc}\n";
+        latexExport += "\\usepackage[T1]{fontenc}\n";
+        latexExport += "\\usepackage[francais]{babel}\n";
+        latexExport += "\\usepackage{courier}\n";
+        latexExport += "\\usepackage{caption}\n";
+        latexExport += "\\usepackage{graphicx}\n";
+        latexExport += "\\usepackage[top=1cm, bottom=2cm, right=1.5cm, left=1.5cm]{geometry}\n\n";
+        latexExport += "\\title{"+ ExportedNote->getTitle() +"}\n\n";
+
+         latexExport += "\\date{";
+        if(displayDate){
+            latexExport += "\\date\\today";
+        }
+        latexExport += "}";
+
+        latexExport += "\\begin{document}\n\n";
+        latexExport += "\\maketitle\n\n";
+        latexExport += NoteToLatex(this->ExportedNote, 0);
+
+        latexExport += "\\end{document}";
+
+        return latexExport;
+    }
+
+
+
+    /*class textNotesExporter : NotesExporter{
     public:
-        HTMLNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
-            CSS  = "#content{margin:0 100px 0 100px;}\n";
-            CSS += "body{font-family: \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Arial, \"Lucida Grande\", sans-serif;}\n";
-            CSS += "h1{background-color:#0F374F; color:#FFFFFF; margin:0 0 50px 0; padding:20px}\n";
-            CSS += "h2{background-color:#0F374F; color:#FFFFFF; margin:0 0 20px 0; padding:10px; font-size:15pt}\n";
-            CSS += "h3{background-color:#0F374F; color:#FFFFFF; margin:0 0 20px 0; padding:6px; font-size:12pt}\n";
-            CSS += "h4{color:#0F374F; margin:0 0 20px 0; border-left: 7px solid #0F374F; border-bottom: 2px solid #0F374F; padding:5px; font-size:10pt}\n";
-            CSS += "h5{color:#0F374F; font-weight:bold; border-left: 5px solid #0F374F; padding:5px;}\n";
-            CSS += "h6{color:#0F374F; font-weight:bold; padding:5px;}\n";
-            CSS += "p{text-align: justify; text-justify: newspaper; margin-bottom:30px;}\n";
-            CSS += "p:first-letter{float:left; display:inline-bloc; background-color:#6B214C; padding:2px; margin-right:4px; font-size:13pt; color:#FFFFFF;}\n";
-            CSS += "span{display:inline-block; background-color:#6B214C; color:#FFFFFF; padding: 5px;}\n";
-            CSS += "img{display:block; margin-left:auto; margin-right:auto;}\n";
-            CSS += "legend{display:block; margin-left:auto; margin-right:auto; width:300px; text-align:center; margin-top:7px; margin-bottom:20px;}\n";
-            CSS += "audio{margin-left:auto; margin-right:auto;display:block;}\n";
-            CSS += "video{margin-left:auto; margin-right:auto;display:block;}\n";
-            CSS += ".subnote{margin-left:40px;}\n";
-            CSS += ".hbar{display:block; background-color:#0F374F; height:5px; margin-bottom:30px;}\n";
-            CSS += ".date{font-size:12pt;}\n";
+        textNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){}
+        QString getRawExport();
+    };*/
 
-            delimitParts = true;
+
+    QString textNotesExporter::NoteToText(Note * ConvertedNote, unsigned int titleLevel){
+        QString textExport;
+        if(ConvertedNote->getType() == Note::Document){
+            Document * tdoc = dynamic_cast<Document*>(ConvertedNote);
+            if(tdoc){
+
+                textExport += "\n";
+
+                if(titleLevel > 0){
+                    textExport += NUtils::repeat(titleLevel, "\t") + "[" + tdoc->getTitle() + "]\n\n";
+                }
+
+                Document::Iterator it = tdoc->begin();
+
+                for(; it != tdoc->end(); it++){
+                    textExport += NoteToText(*it, titleLevel + 1);
+                }
+
+                if(delimitParts){
+                    textExport += "_________________________________________________________________________________\n\n";
+                }
+
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NArticle)
+        {
+            NArticle * tArt = dynamic_cast<NArticle*>(ConvertedNote);
+            if(tArt){
+                textExport += ArticleToText(tArt, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NImage){
+            NImage * tIm = dynamic_cast<NImage*>(ConvertedNote);
+            if(tIm){
+                textExport += ImageToText(tIm, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NAudio)
+        {
+            NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
+            if(tAud){
+                textExport += AudioToText(tAud, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NVideo){
+            NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
+            if(tVid){
+                textExport += VideoToText(tVid, titleLevel);
+            }
+        }
+        return textExport;
+    }
+
+    QString textNotesExporter::ArticleToText(NArticle * ConvertedArticle, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedArticle->getTitle() + "]\n";
+        }
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedArticle->getText() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::ImageToText(NImage * ConvertedImage, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedImage->getTitle() + "]\n\n";
+        }
+        textExport += NUtils::repeat(titleLevel, "\t") + "Voir " + ConvertedImage->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedImage->getDescription() + "\n\n";
+
+        return textExport;
+    }
+
+    QString textNotesExporter::AudioToText(NAudio * ConvertedAudio, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedAudio->getTitle() + "]\n\n";
         }
 
-        void setCSS(const QString & css){CSS = css;}
-        QString getCSS(){return CSS;}
+        textExport += NUtils::repeat(titleLevel, "\t") + "Ecouter " + ConvertedAudio->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedAudio->getDescription() + "\n\n";
 
-        QString getRawExport();
+        return textExport;
+    }
 
-    };
-
-    /**
-     * \class LaTexNotesExporter
-     * \brief Classe permettant d'exporter une note au format LaTex.
-     * Implémentation de l'interface NotesExporter
-     */
-    class LaTexNotesExporter : NotesExporter{
-    public:
-        enum latexDocType{book, article, report};
-
-
-        /**
-         * \brief Constructeur de la classe LaTexNotesExporter
-         * \param ExportedNote : Note à exporter
-         */
-        LaTexNotesExporter(Note * ExportedNote) : NotesExporter(ExportedNote){
-            ignoreAudio = false;
-            ignoreVideo = false;
-            ignoreNumbering = true;
-            delimitParts = true;
-            displayDate = false;
-            docType = article;
-
-            titleSize.insert(1, "part");
-            titleSize.insert(2, "section");
-            titleSize.insert(3, "subsection");
-            titleSize.insert(4, "subsubsection");
+    QString textNotesExporter::VideoToText(NVideo * ConvertedVideo, unsigned int titleLevel){
+        QString textExport = "";
+        if(titleLevel){
+            textExport += NUtils::repeat(titleLevel, "\t") + "[" + ConvertedVideo->getTitle() + "]\n\n";
         }
 
-        /**
-         * \brief Permet d'indiquer vers quel type de document latex convertir la note ("Book", "Article", "Report")
-         * \param docType : Type de document. Liste disponible dans l'énumération LaTexNotesExporter::latexDocType
-         */
-        void setDocType(latexDocType docType);
+        textExport += NUtils::repeat(titleLevel, "\t") + "Regarder " + ConvertedVideo->getUrl() + "\n";
+        textExport += NUtils::repeat(titleLevel, "\t") + ConvertedVideo->getDescription() + "\n\n";
 
-        /**
-         * \brief Permet d'obtenir le type de document Latex choisi
-         */
-        latexDocType getDocType() const {return docType;}
+        return textExport;
+    }
 
-        /**
-         * \brief Permet de choisir si les notes au format Audio doivent êtres pris en compte ou ignorés lors de la conversion
-         */
-        void setIgnoreAudio(bool IgnoreAudio){ignoreAudio = IgnoreAudio;}
+    QString textNotesExporter::getRawExport(){
+        QString textExport = NUtils::repeat(5, "\t") + " ********** " +ExportedNote->getTitle() + " **********\n";
+        if(displayDate){
+            textExport += "Le @@@@@@@@ \n\n"; //Remplacer par la date
+        }
+        textExport += "\n\n";
 
-        /**
-         * \brief Permet de choisir si les notes au format Video doivent êtres pris en compte ou ignorés lors de la conversion
-         */
-        void setIgnoreVideo(bool IgnoreVideo){ignoreVideo = IgnoreVideo;}
+        textExport += NoteToText(this->ExportedNote, 0);
 
-        /**
-         * \brief Permet de choisir si la numérotation des parties du document doit être affichée ou non
-         */
-        void setIgnoreNumerotation(bool IgnoreNumbering){ignoreNumbering = IgnoreNumbering;}
+        return textExport;
+    }
 
-        QString getRawExport();
-    private:
-        latexDocType docType;
-        bool ignoreAudio;
-        bool ignoreVideo;
-        bool ignoreNumbering;
 
-        QMap <int, QString> titleSize;
+    QString HTMLNotesExporter::NoteToHTML(Note * ConvertedNote, unsigned int titleLevel){
+        QString HTMLExport;
+        (titleLevel > 6) ? titleLevel = 5 : titleLevel;
+        if(ConvertedNote->getType() == Note::Document){
+            Document * tdoc = dynamic_cast<Document*>(ConvertedNote);
+            if(tdoc){
+                if(titleLevel > 0){
+                    HTMLExport += "<h" + QString::number(titleLevel + 1) + ">" + ConvertedNote->getTitle() + "</h" + QString::number(titleLevel + 1) +">";
+                }
 
-        /**
-         * \brief Méthode (\b privée) permettant de convertir n'importe quel type de note, en une note au format latex
-         * Cette méthode convertis l'intégralité d'une note en parcourant de manière récursive les documents qu'elle contient.
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document).
-         * \return Un QString contenant le la note convertie au format textuel
-         */
-        QString NoteToLatex(Note * ConvertedNote, unsigned int titleLevel);
+                HTMLExport += "<div class=\"subnote\">";
 
-        /**
-         * \brief Permet de convertir un article au format latex (\b privée)
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant le l'article converti au format latex
-         */
-        QString ArticleToLatex(NArticle * ConvertedArticle, unsigned int titleLevel);
+                Document::Iterator it = tdoc->begin();
 
-        /**
-         * \brief Permet de convertir une note de type Image au format latex (\b privée)
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant la note Image convertie au format latex
-         */
-        QString ImageToLatex(NImage * ConvertedImage, unsigned int titleLevel);
+                for(; it != tdoc->end(); it++){
+                    HTMLExport += NoteToHTML(*it, titleLevel + 1);
+                }
 
-        /**
-         * \brief Permet de convertir une note de type Audio au format latex (\b privée)
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant la note Audio convertie au format latex
-         */
-        QString AudioToLatex(NAudio * ConvertedAudio, unsigned int titleLevel);
+                HTMLExport += "</div>";
 
-        /**
-         * \brief Permet de convertir une note de type Video au format latex (\b privée)
-         * \param convertedNote : Note à convertir
-         * \param TitleLevel : Niveau de titre de la note convertie: 0 (Titre de la page) - N (Nième partie du document)
-         * \return Un QString contenant la note Video convertie au format latex
-         */
-        QString VideoToLatex(NVideo * ConvertedVideo, unsigned int titleLevel);
-    };
+                if(delimitParts){
+                    HTMLExport += "<div class=\"hbar\"></div>";
+                }
+
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NArticle)
+        {
+            NArticle * tArt = dynamic_cast<NArticle*>(ConvertedNote);
+            if(tArt){
+                HTMLExport += ArticleToHTML(tArt, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NImage){
+            NImage * tIm = dynamic_cast<NImage*>(ConvertedNote);
+            if(tIm){
+                HTMLExport += ImageToHTML(tIm, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NAudio)
+        {
+            NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
+            if(tAud){
+                HTMLExport += AudioToHTML(tAud, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NVideo){
+            NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
+            if(tVid){
+                HTMLExport += VideoToHTML(tVid, titleLevel);
+            }
+        }
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::ArticleToHTML(NArticle * ConvertedArticle, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedArticle->getTitle() +"</span>\n";
+        }
+        HTMLExport += "<p>"+ ConvertedArticle->getText() +"</p>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::ImageToHTML(NImage * ConvertedImage, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedImage->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<img src=\""+ ConvertedImage->getUrl() +"\">\n";
+        HTMLExport += "<legend>- <i>Illustration</i> : "+ ConvertedImage->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::AudioToHTML(NAudio * ConvertedAudio, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedAudio->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<audio controls><source src=\""+ ConvertedAudio->getUrl() +"\"></audio>\n";
+        HTMLExport += "<legend>- <i>Source audio</i> : "+ ConvertedAudio->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::VideoToHTML(NVideo * ConvertedVideo, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedVideo->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<video controls src=\""+ ConvertedVideo->getUrl() +"\"></video>\n";
+        HTMLExport += "<legend>- <i>Source audio</i> : "+ ConvertedVideo->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::getRawExport(){
+        QString HTMLExport = "<html>\n";
+        HTMLExport += "<head>\n";
+        HTMLExport += "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n";
+        HTMLExport += "<style>\n";
+        HTMLExport += CSS;
+        HTMLExport += "</style>\n";
+        HTMLExport += "</head>\n";
+        HTMLExport += "<body>\n";
+        HTMLExport += "<div id=\"content\">\n";
+        HTMLExport += "<h1>"+ ExportedNote->getTitle() + "\n";
+        if(displayDate){
+            QString date = QDate::currentDate().toString("dd/MM/yyyy");
+            HTMLExport += "<div class=\"date\">Exporté le "+ date +"</div>\n";
+        }
+        HTMLExport += "</h1>\n";
+
+        HTMLExport += NoteToHTML(ExportedNote, 0);
+
+        HTMLExport += "</div>\n";
+        HTMLExport += "</body>\n";
+        HTMLExport += "</html>\n";
+
+        return HTMLExport;
+    }
+
+
 }
