@@ -5,19 +5,21 @@ namespace NM
 {
     class Tag
     {
-        QString tagName;
+        QString label;
     public:
-        Tag(QString tagName) : tagName(tagName){}
+        Tag(const QString & label) : label(label){}
 
-        void setTagName(QString tagName){this->tagName = tagName;}
+        void setLabel(const QString & label){this->label = label;}
 
-        const QString & getTagName() const{return this->tagName;}
-        QString & getTagName(){return this->tagName;}
+        const QString & getLabel() const{return this->label;}
+        QString & getLabel(){return this->label;}
 
-        bool operator==(const Tag & t) const {return tagName == t.tagName;}
-        bool operator==(const QString & str) const {return tagName == str;}
+        bool operator==(const Tag & t) const {return label == t.label;}
+        bool operator==(const QString & str) const {return label == str;}
 
-        bool operator!=(const Tag & t) const {return tagName != t.tagName;}
-        bool operator!=(const QString & str) const {return tagName != str;}
+        bool operator!=(const Tag & t) const {return label != t.label;}
+        bool operator!=(const QString & str) const {return label != str;}
+
+        operator QString(){return this->label;}
     };
 }
