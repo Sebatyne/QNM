@@ -46,6 +46,8 @@ namespace NM {
     }
 
     NotesManager::~NotesManager(){
+        saveWorkspace();
+
         //delete sur les factories, les notes si elles ne sont pas enregistrées...
         //save des docs avant les notes, sinon problème
         for(Iterator i = begin(); i != end(); i++) {
@@ -63,7 +65,8 @@ namespace NM {
             }
         }
 
-        saveWorkspace();
+        for(Iterator i = corbeille_begin(); i != corbeille_end(); i++)
+            delete *i;
     }
 
     void NotesManager::loadWorkspace(QString fold) {
@@ -100,46 +103,6 @@ namespace NM {
                 createNoteFromNode(n);
                 n = n.nextSibling();
             }
-
-            /*
-            n = docElem.firstChild();
-            while (!n.isNull()) {
-                if(n.nodeName() == "document") {
-                        //puis ajout des documents
-                        createDocFromNode(n);
-                }
-                    n = n.nextSibling();
-            }*/
-
-        //ancienne solution chargeant le workspace en fonction des fichiers présents
-        /*workspace.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot | QDir::Readable | QDir::Writable);
-        QStringList dir = workspace.entryList();
-
-        //lecture des fichiers
-        for (int i = 0; i < dir.size(); i++) {
-            //affiche le nom du fichier disque correspondant
-            qDebug() <<  workspace.path() + "/" + dir.at(i);
-
-            //on déclare un descripteur de fichier, ouvert en read-only
-            QFile fd(workspace.path() + "/" + dir.at(i));
-            fd.open(QIODevice::ReadOnly);
-
-            //on récupère l'id de la note, son type et son titre (chop supprime le dernier caractère de ligne "\n"
-            QString sid = fd.readLine();
-            sid.chop(1);
-            unsigned int id = sid.toUInt(); //vérification du nom ??
-            qDebug() << id;
-            QString type = fd.readLine();
-            type.chop(1);
-            QString title = fd.readLine();
-            title.chop(1);
-
-            //ajout à notes de la note qui vient d'être lue, puis fermeture de la note
-            qDebug() << "type :" << type<< " title :" << title;
-            notes << factories[type]->buildNote(id, title);
-
-            fd.close();
-        }*/
     }
 
     void NotesManager::createNoteFromNode(const QDomNode n) {
@@ -171,42 +134,6 @@ namespace NM {
         notes << factories[type]->buildNote(id, title);
     }
 
-/*
-    void NotesManager::createDocFromNode(const QDomNode n) {
-        QDomNode n2 = n.firstChild();
-
-        unsigned int id;
-        QString title;
-        QList<unsigned int> sn;
-
-        qDebug() << n2.toElement().text();
-
-        while (!n2.isNull()) {
-            QDomElement e = n2.toElement();
-            //qDebug() << e.text();
-
-            if (!e.isNull()) {
-                if (e.tagName() == QString("title")) {
-                        title = e.text();
-                } else if (e.tagName() == QString("id")) {
-                    id = e.text().toUInt();
-                } else if (e.tagName() == QString("sous-note")) {
-                    sn << e.text().toUInt();
-                }
-            }
-
-            n2 = n2.nextSibling();
-        }
-
-        NM::Document *d = dynamic_cast<NM::Document*>(factories["Document"]->buildNote(id, title));
-
-        for(QList<unsigned int>::iterator it = sn.begin(); it != sn.end(); it++) {
-            d->addNote(this->getNote(*it));
-        }
-
-        notes << d;
-    }
-*/
     Note* NotesManager::getNote (unsigned int id) {
         QSet<Note*>::iterator i;
         for (i = notes.begin(); i != notes.end(); ++i) {
@@ -285,6 +212,7 @@ namespace NM {
     void NotesManager::saveWorkspace() {
         QDomDocument doc("QNM");
         QDomElement root = doc.createElement(workspace.dirName());
+        qDebug() << workspace.dirName();
         doc.appendChild(root);
 
         for (Iterator it = begin(); it != end(); it++) {
@@ -315,4 +243,33 @@ namespace NM {
 
         fd.close();
     }
+
+void NotesManager::deleteNote(Note *n) {
+    corbeille += n;
+    notes -= n;
+
+    //suppression de cette note dans les documents
+    for (Iterator it = begin(); it != end(); it++) {
+        if ((*it)->getType() == Note::Document) {
+            Document *doc = dynamic_cast<Document*>(*it);
+            doc->removeNote(n);
+            save(doc);
+        }
+    }
+    saveWorkspace();
+}
+
+Note* NotesManager::restoreNote(unsigned int id) {
+    QSet<Note*>::iterator i;
+    Note *n;
+    for (i = corbeille.begin(); i != corbeille.end(); ++i) {
+        if ((*i)->getId() == id)
+            n = *i;
+    }
+
+    corbeille -= n;
+    notes += n;
+    return n;
+}
+
 }

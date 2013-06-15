@@ -18,6 +18,8 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
     connect(ui->find_button, SIGNAL(pressed()), this, SLOT(open_image()));
+    connect(ui->delete_button, SIGNAL(pressed()), this, SLOT(delete_note()));
+    connect(ui->delete_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 
     ui->preview->setMinimumWidth(this->width()/2);
 
@@ -50,3 +52,10 @@ void Image_modif::showImage() {
     QPixmap pix2 = pix.scaled(ui->preview->height(), ui->preview->width(), Qt::KeepAspectRatioByExpanding, Qt::FastTransformation);
     ui->preview->setPixmap(pix2);
 }
+
+void Image_modif::delete_note() {
+    NM::NotesManager::getInstance().deleteNote(note);
+    NM::NotesManager::getInstance().saveWorkspace();
+    this->hide();
+}
+

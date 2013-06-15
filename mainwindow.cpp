@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNewVideo,SIGNAL(triggered()), this, SLOT(dialogNewVideo()));
     connect(ui->actionNewImage,SIGNAL(triggered()), this, SLOT(dialogNewImage()));
     connect(ui->actionNewAudio,SIGNAL(triggered()), this, SLOT(dialogNewAudio()));
+    connect(ui->actionCorbeille, SIGNAL(triggered()), this, SLOT(showCorbeille()));
 
     connect(ui->tree, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
     connect(ui->tree, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
@@ -51,7 +52,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::saveWork() {
     NM::NotesManager::getInstance().saveWorkspace();
-    //NM::NotesManager::releaseInstance();
 }
 
 void MainWindow::createListNotes() {
@@ -169,5 +169,10 @@ void MainWindow::viewItem(QListWidgetItem *wi) {
         return;
 
     ui->tab_editor->layout()->addWidget(wid);
+}
+
+void MainWindow::showCorbeille() {
+    Corbeille_modif *cm = new Corbeille_modif(this);
+    cm->show();
 }
 

@@ -20,6 +20,7 @@
 #include "Image_modif.h"
 #include "Audio_modif.h"
 #include "Video_modif.h"
+#include "Corbeille_modif.h"
 
 namespace Ui {
 class MainWindow;
@@ -88,14 +89,20 @@ private slots :
     */
     void viewItem(QListWidgetItem *wi);
     /**
+     * \brief lance la popup de la corbeille
+    */
+    void showCorbeille();
+
+public slots :
+    /**
      * \brief Met à jour l'affichage de la liste des notes du workspace
     */
     void createListNotes();
     
 private:
     Ui::MainWindow *ui;
-    QStandardItemModel *arborescence;
-    QStandardItem *parentItem;
+    //QStandardItemModel *arborescence;
+    //QStandardItem *parentItem;
 
     static MainWindow *mw;
 

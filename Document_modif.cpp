@@ -28,6 +28,8 @@ Document_modif::Document_modif(NM::Note *n, QWidget *parent) :
     connect(ui->other_notes, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(addNoteToDoc()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
+    connect(ui->delete_button, SIGNAL(pressed()), this, SLOT(delete_note()));
+    connect(ui->delete_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 }
 
 Document_modif::~Document_modif()
@@ -116,4 +118,10 @@ void Document_modif::removeNoteFromDoc() {
     init_contained_notes();
     init_other_notes();
     //note->setModified();
+}
+
+void Document_modif::delete_note() {
+    NM::NotesManager::getInstance().deleteNote(note);
+    NM::NotesManager::getInstance().saveWorkspace();
+    this->hide();
 }

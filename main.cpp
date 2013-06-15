@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     
     MainWindow *w = MainWindow::getInstance();
 
-    nm.saveWorkspace();
+    //nm.saveWorkspace();
 
     w->show();
 

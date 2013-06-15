@@ -38,6 +38,7 @@ private slots :
      *Est appelé lors de l'appui sur le bouton d'enregistrement
     */
     void save_note();
+    void delete_note();
     /**
      * \brief Afficheun dialog de navigation dans les fichiers pour choisir une image
     */

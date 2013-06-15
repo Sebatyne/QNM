@@ -57,6 +57,9 @@ namespace NM {
         void save(Note *note) const;
         void saveWorkspace();
 
+        void deleteNote(Note *n);
+        Note* restoreNote(unsigned int id);
+
         void createNoteFromNode(const QDomNode n);
         //void createDocFromNode(const QDomNode n);
 
@@ -80,6 +83,9 @@ namespace NM {
         //fonctions de l'itérateur
             Iterator begin() {return Iterator(notes);}
             Iterator end() {Iterator i(notes.end()); return i;}
+
+            Iterator corbeille_begin() {return Iterator(corbeille);}
+            Iterator corbeille_end() {Iterator i(corbeille.end()); return i;}
     };
 }
 

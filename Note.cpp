@@ -76,7 +76,8 @@ namespace NM {
 
     void Document::removeNote(Note *n) {
         modified = true;
-        notes.removeOne(n);
+        while(notes.removeOne(n))
+            qDebug() << "note enlevee du document";
     }
 
     QString Document::toText () const {

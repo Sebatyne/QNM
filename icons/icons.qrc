@@ -13,5 +13,6 @@
         <file>text.png</file>
         <file>text-editor.png</file>
         <file>video.png</file>
+        <file>trash.png</file>
     </qresource>
 </RCC>

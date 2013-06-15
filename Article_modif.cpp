@@ -15,6 +15,8 @@ Article_modif::Article_modif(NM::Note *n, QWidget *parent) :
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
+    connect(ui->delete_button, SIGNAL(pressed()), this, SLOT(delete_note()));
+    connect(ui->delete_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 }
 
 Article_modif::~Article_modif()
@@ -26,4 +28,10 @@ void Article_modif::save_note() {
     note->setTitle(ui->title_note->text());
     note->setText(ui->text_note->toPlainText());
     NM::NotesManager::getInstance().save(note);
+}
+
+void Article_modif::delete_note() {
+    NM::NotesManager::getInstance().deleteNote(note);
+    NM::NotesManager::getInstance().saveWorkspace();
+    this->hide();
 }
