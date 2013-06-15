@@ -13,6 +13,7 @@ Article_modif::Article_modif(NM::Note *n, QWidget *parent) :
     ui->text_note->setText(note->getText());
 
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 }
 

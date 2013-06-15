@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTreeWidget>
 #include <QList>
-#include <QTreeWidgetItem>
+#include <QListWidgetItem>
 #include <QStringList>
 #include <QList>
 #include <QString>
@@ -27,6 +27,11 @@ class MainWindow;
 
 class QNMListWidgetItem;
 
+/**
+ * \class MainWindow
+ * \brief Classe singleton représentant l'interface graphique. Dépend d'un fichier .ui
+ */
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -34,18 +39,57 @@ class MainWindow : public QMainWindow
 public:
     ~MainWindow();
 
+    /**
+     * \brief Retourne l'unique instance permise de la fenêtre principale
+    */
     static MainWindow* getInstance();
+
+    /**
+     * \brief Libére la mémoire occupée par la fenêtre de l'application
+    */
     static void releaseIntance();
 
 private slots :
+    /**
+     * \brief Indique au Notes-Manager d'enregistrer l'espace de travail.
+     *Cette fonction est invoquée lors de la destruction de la fenêtre
+    */
     void saveWork();
+
+    /**
+     * \brief S'occupe de la création d'un nouvel Article
+    */
     void dialogNewArticle();
+    /**
+     * \brief S'occupe de la création d'une nouvelle Image
+    */
     void dialogNewImage();
+    /**
+     * \brief S'occupe de la création d'une nouvlle Video
+    */
     void dialogNewVideo();
+    /**
+     * \brief S'occupe de la création d'un nouveau media Audio
+    */
     void dialogNewAudio();
+    /**
+     * \brief S'occupe de la création d'un nouveau Document
+    */
     void dialogNewDocument();
+    /**
+     * \brief Demande un nom de note à l'utilisateur
+     *Cette fonction est appelée par :
+     *  - dialogNewArticle
+     *  - dialogNew...
+    */
     QString dialogNewNote();
+    /**
+     * \brief Affiche le widget correspondant à la note que l'utilisateur veut éditer
+    */
     void viewItem(QListWidgetItem *wi);
+    /**
+     * \brief Met à jour l'affichage de la liste des notes du workspace
+    */
     void createListNotes();
     
 private:

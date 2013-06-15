@@ -14,6 +14,7 @@ Audio_modif::Audio_modif(NM::Note *n, QWidget *parent) :
     ui->description_line->setText(note->getDescription().trimmed());
 
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 }
 

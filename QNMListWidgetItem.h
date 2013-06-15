@@ -3,6 +3,12 @@
 
 #include <QListWidgetItem>
 
+/**
+ * \class QNMListWidgetItem
+ * \
+ * \brief Classe représentant une note dans l'affichage.
+ *Hérite d'un QListWidgetItem, mais comporte l'id de la note représentée en plus
+ */
 class QNMListWidgetItem : public QListWidgetItem {
 public :
     QNMListWidgetItem (const QString & text, QListWidget *parent = 0, int type = Type) : QListWidgetItem(text, parent, type) {}

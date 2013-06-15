@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    saveWork();
     NM::NotesManager::releaseInstance();
 }
 
