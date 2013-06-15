@@ -251,4 +251,132 @@ namespace NM{
     }
 
 
+    QString HTMLNotesExporter::NoteToHTML(Note * ConvertedNote, unsigned int titleLevel){
+        QString HTMLExport;
+        (titleLevel > 6) ? titleLevel = 5 : titleLevel;
+        if(ConvertedNote->getType() == Note::Document){
+            Document * tdoc = dynamic_cast<Document*>(ConvertedNote);
+            if(tdoc){
+                if(titleLevel > 0){
+                    HTMLExport += "<h" + QString::number(titleLevel + 1) + ">" + ConvertedNote->getTitle() + "</h" + QString::number(titleLevel + 1) +">";
+                }
+
+                HTMLExport += "<div class=\"subnote\">";
+
+                Document::Iterator it = tdoc->begin();
+
+                for(; it != tdoc->end(); it++){
+                    HTMLExport += NoteToHTML(*it, titleLevel + 1);
+                }
+
+                HTMLExport += "</div>";
+
+                if(delimitParts){
+                    HTMLExport += "<div class=\"hbar\"></div>";
+                }
+
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NArticle)
+        {
+            NArticle * tArt = dynamic_cast<NArticle*>(ConvertedNote);
+            if(tArt){
+                HTMLExport += ArticleToHTML(tArt, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NImage){
+            NImage * tIm = dynamic_cast<NImage*>(ConvertedNote);
+            if(tIm){
+                HTMLExport += ImageToHTML(tIm, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NAudio)
+        {
+            NAudio * tAud = dynamic_cast<NAudio*>(ConvertedNote);
+            if(tAud){
+                HTMLExport += AudioToHTML(tAud, titleLevel);
+            }
+        }
+        else if(ConvertedNote->getType() == Note::NVideo){
+            NVideo * tVid = dynamic_cast<NVideo*>(ConvertedNote);
+            if(tVid){
+                HTMLExport += VideoToHTML(tVid, titleLevel);
+            }
+        }
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::ArticleToHTML(NArticle * ConvertedArticle, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedArticle->getTitle() +"</span>\n";
+        }
+        HTMLExport += "<p>"+ ConvertedArticle->getText() +"</p>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::ImageToHTML(NImage * ConvertedImage, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedImage->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<img src=\""+ ConvertedImage->getUrl() +"\">\n";
+        HTMLExport += "<legend>- <i>Illustration</i> : "+ ConvertedImage->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::AudioToHTML(NAudio * ConvertedAudio, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedAudio->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<audio controls><source src=\""+ ConvertedAudio->getUrl() +"\"></audio>\n";
+        HTMLExport += "<legend>- <i>Source audio</i> : "+ ConvertedAudio->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::VideoToHTML(NVideo * ConvertedVideo, unsigned int titleLevel){
+        QString HTMLExport = "";
+        if(titleLevel){
+            HTMLExport += "<span>"+ ConvertedVideo->getTitle() +"</span>\n";
+        }
+
+        HTMLExport += "<video controls src=\""+ ConvertedVideo->getUrl() +"\"></video>\n";
+        HTMLExport += "<legend>- <i>Source audio</i> : "+ ConvertedVideo->getDescription() +" -</legend>\n";
+
+        return HTMLExport;
+    }
+
+    QString HTMLNotesExporter::getRawExport(){
+        QString HTMLExport = "<html>\n";
+        HTMLExport += "<head>\n";
+        HTMLExport += "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n";
+        HTMLExport += "<style>\n";
+        HTMLExport += CSS;
+        HTMLExport += "</style>\n";
+        HTMLExport += "</head>\n";
+        HTMLExport += "<body>\n";
+        HTMLExport += "<div id=\"content\">\n";
+        HTMLExport += "<h1>"+ ExportedNote->getTitle() + "\n";
+        if(displayDate){
+            QString date = QDate::currentDate().toString("dd/MM/yyyy");
+            HTMLExport += "<div class=\"date\">Exporté le "+ date +"</div>\n";
+        }
+        HTMLExport += "</h1>\n";
+
+        HTMLExport += NoteToHTML(ExportedNote, 0);
+
+        HTMLExport += "</div>\n";
+        HTMLExport += "</body>\n";
+        HTMLExport += "</html>\n";
+
+        return HTMLExport;
+    }
+
+
 }
