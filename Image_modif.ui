@@ -183,9 +183,6 @@
         <property name="styleSheet">
          <string notr="true">font: oblique 11pt &quot;Cantarell&quot;;</string>
         </property>
-        <property name="echoMode">
-         <enum>QLineEdit::Normal</enum>
-        </property>
        </widget>
       </item>
       <item>

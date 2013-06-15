@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTreeWidget>
 #include <QList>
-#include <QTreeWidgetItem>
+#include <QListWidgetItem>
 #include <QStringList>
 #include <QList>
 #include <QString>

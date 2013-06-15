@@ -15,6 +15,7 @@ Video_modif::Video_modif(NM::Note *n, QWidget *parent) :
 
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
 }
 
 Video_modif::~Video_modif()
