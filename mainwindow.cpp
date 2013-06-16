@@ -191,9 +191,33 @@ void MainWindow::viewHTML(QListWidgetItem *wi) {
     NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
     NM::HTMLNotesExporter * exporter = new NM::HTMLNotesExporter(n);
     QWebView *wv = new QWebView();
-    ui->tab_html->layout()->addWidget(wv);
+    wv->settings()->setAttribute(QWebSettings::AutoLoadImages, true);
+    wv->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
     qDebug() << "le HTML : " << exporter->getRawExport();
-    wv->setHtml(exporter->getRawExport(), QUrl(QString("/")));
+    wv->setContent(exporter->getRawExport().toAscii(), QString("text/html"), QUrl::fromLocalFile("/"));
+    //wv->load(QUrl("/home/nwavrant/Bureau/index.html"));
+    ui->tab_html->layout()->addWidget(wv);
+}
+
+void MainWindow::viewTeX(QListWidgetItem *wi) {
+    ui->tabWidget->setCurrentIndex(2);
+    if (ui->tab_TeX->layout()) {
+        QLayoutItem *child;
+        while( (child = ui->tab_TeX->layout()->takeAt(0)) )  {
+            ui->tab_TeX->layout()->removeItem( child );
+            delete child->widget();
+            delete child;
+         }
+    } else {
+        QVBoxLayout *lay = new QVBoxLayout();
+        ui->tab_TeX->setLayout(lay);
+    }
+
+    NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
+    NM::LaTexNotesExporter * exporter = new NM::LaTexNotesExporter(n);
+    QTextEdit *te = new QTextEdit();
+    ui->tab_TeX->layout()->addWidget(te);
+    te->setText(exporter->getRawExport());
 }
 
 void MainWindow::showCorbeille() {
@@ -209,6 +233,10 @@ void MainWindow::showExport(int nbTab) {
 
         case 1 :
             viewHTML(ui->tree->currentItem());
+            break;
+
+        case 2 :
+            viewTeX(ui->tree->currentItem());
             break;
     }
 }

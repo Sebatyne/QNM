@@ -43,5 +43,5 @@ void Audio_modif::delete_note() {
 
 void Audio_modif::open_note() {
      ui->url_line->setText(QFileDialog::getOpenFileName(this,
-         tr("Open Audio"), "/home/~", tr("Audio Files (*.mpg *.mp3 *.mp4)")));
+         tr("Open Audio"), "$HOME/", tr("Audio Files (*.mpg *.mp3 *.mp4)")));
 }

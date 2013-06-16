@@ -95,6 +95,10 @@ private slots :
     */
     void viewHTML(QListWidgetItem *wi);
     /**
+     * \brief Affiche l'export TeX correspondant à la note que l'utilisateur veut éditer
+    */
+    void viewTeX(QListWidgetItem *wi);
+    /**
      * \brief lance la popup de la corbeille
     */
     void showCorbeille();
