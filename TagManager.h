@@ -137,6 +137,13 @@ namespace NM
          */
         QSet<const Note*>Filter(QSet<QString> requestedTags);
 
+        /**
+         * \brief Retrouve les tags associés à une note
+         * \param N : Note
+         * \return L'ensemble des tags associés à la note
+         */
+        QSet<const Tag*>getLinkedTags(const Note * N) const;
+
         Iterator getIterator(){return Iterator(this->hash);}
     };
 }

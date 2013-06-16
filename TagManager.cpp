@@ -130,4 +130,17 @@ namespace NM
         }
         return this->Filter(requestedTags);
     }
+
+    QSet<const Tag*> TagManager::getLinkedTags(const Note * N) const{
+        QHashIterator<const Tag*, QSet<const Note*> > it(hash);
+        QSet<const Tag*> linkedTags;
+        while(it.hasNext()){
+            it.next();
+            const QSet<const Note*> noteSet = it.value();
+            if(noteSet.contains(N)){
+                linkedTags.insert(it.key());
+            }
+        }
+        return linkedTags;
+    }
 }
