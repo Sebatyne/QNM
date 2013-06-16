@@ -8,6 +8,12 @@
 #include "Note.h"
 #include "NUtils.h"
 
+class Note;
+class NArticle;
+class NAudio;
+class NImage;
+class NVideo;
+
 namespace NM{
 
     /**

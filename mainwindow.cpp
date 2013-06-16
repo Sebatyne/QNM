@@ -41,6 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->tree, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
     connect(ui->tree, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(viewItem(QListWidgetItem*)));
+
+    //affichage des exports
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(showExport(int)));
 }
 
 MainWindow::~MainWindow()
@@ -171,8 +174,41 @@ void MainWindow::viewItem(QListWidgetItem *wi) {
     ui->tab_editor->layout()->addWidget(wid);
 }
 
+void MainWindow::viewHTML(QListWidgetItem *wi) {
+    ui->tabWidget->setCurrentIndex(1);
+    if (ui->tab_html->layout()) {
+        QLayoutItem *child;
+        while( (child = ui->tab_html->layout()->takeAt(0)) )  {
+            ui->tab_html->layout()->removeItem( child );
+            delete child->widget();
+            delete child;
+         }
+    } else {
+        QVBoxLayout *lay = new QVBoxLayout();
+        ui->tab_html->setLayout(lay);
+    }
+
+    NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
+    NM::HTMLNotesExporter * exporter = new NM::HTMLNotesExporter(n);
+    QWebView *wv = new QWebView();
+    ui->tab_html->layout()->addWidget(wv);
+    qDebug() << "le HTML : " << exporter->getRawExport();
+    //wv->setHtml(exporter->getRawExport(), QUrl(QString("/")));
+}
+
 void MainWindow::showCorbeille() {
     Corbeille_modif *cm = new Corbeille_modif(this);
     cm->show();
 }
 
+void MainWindow::showExport(int nbTab) {
+    switch (nbTab) {
+        case 0 :
+            viewItem(ui->tree->currentItem());
+            break;
+
+        case 1 :
+            viewHTML(ui->tree->currentItem());
+            break;
+    }
+}

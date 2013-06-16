@@ -13,6 +13,8 @@
 #include <QInputDialog>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QTextEdit>
+#include <QtWebKit/QWebView>
 #include "NotesManager.h"
 #include "QNMListWidgetItem.h"
 #include "Article_modif.h"
@@ -89,9 +91,18 @@ private slots :
     */
     void viewItem(QListWidgetItem *wi);
     /**
+     * \brief Affiche l'export HTML correspondant à la note que l'utilisateur veut éditer
+    */
+    void viewHTML(QListWidgetItem *wi);
+    /**
      * \brief lance la popup de la corbeille
     */
     void showCorbeille();
+    /**
+     * \brief Affiche l'export de la note actuellement sélectionnée
+     *Fonction appelée lors de l'appui sur l'un des onglets de la zone d'affichage
+     */
+    void showExport(int nbTab);
 
 public slots :
     /**

@@ -17,7 +17,7 @@ Image_modif::Image_modif(NM::Note *n, QWidget *parent) :
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(save_note()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
-    connect(ui->find_button, SIGNAL(pressed()), this, SLOT(open_image()));
+    connect(ui->find_button, SIGNAL(pressed()), this, SLOT(open_note()));
     connect(ui->delete_button, SIGNAL(pressed()), this, SLOT(delete_note()));
     connect(ui->delete_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
 
@@ -41,7 +41,7 @@ void Image_modif::save_note() {
     NM::NotesManager::getInstance().save(note);
 }
 
-void Image_modif::open_image() {
+void Image_modif::open_note() {
      ui->url_line->setText(QFileDialog::getOpenFileName(this,
          tr("Open Image"), "/home/~", tr("Image Files (*.png *.jpg *.bmp)")));
      pix = QPixmap(ui->url_line->text());

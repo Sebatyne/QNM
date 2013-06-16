@@ -322,7 +322,7 @@ namespace NM{
             HTMLExport += "<span>"+ ConvertedImage->getTitle() +"</span>\n";
         }
 
-        HTMLExport += "<img src=\""+ ConvertedImage->getUrl() +"\">\n";
+        HTMLExport += "<img src=\""+ ConvertedImage->getUrl() +"\"/>\n";
         HTMLExport += "<legend>- <i>Illustration</i> : "+ ConvertedImage->getDescription() +" -</legend>\n";
 
         return HTMLExport;
@@ -347,7 +347,7 @@ namespace NM{
         }
 
         HTMLExport += "<video controls src=\""+ ConvertedVideo->getUrl() +"\"></video>\n";
-        HTMLExport += "<legend>- <i>Source audio</i> : "+ ConvertedVideo->getDescription() +" -</legend>\n";
+        HTMLExport += "<legend>- <i>Source video</i> : "+ ConvertedVideo->getDescription() +" -</legend>\n";
 
         return HTMLExport;
     }

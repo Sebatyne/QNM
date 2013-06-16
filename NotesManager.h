@@ -13,6 +13,7 @@
 #include <QPalette>
 #include "Note.h"
 #include "NoteFactory.h"
+#include "NotesExporter.h"
 
 namespace NM {
     class Note;

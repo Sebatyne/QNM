@@ -42,7 +42,7 @@ private slots :
     /**
      * \brief Afficheun dialog de navigation dans les fichiers pour choisir une image
     */
-    void open_image();
+    void open_note();
 
 private:
     NM::NImage *note;

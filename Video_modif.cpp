@@ -18,6 +18,7 @@ Video_modif::Video_modif(NM::Note *n, QWidget *parent) :
     connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(saveWork()));
     connect(ui->delete_button, SIGNAL(pressed()), this, SLOT(delete_note()));
     connect(ui->delete_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListNotes()));
+    connect(ui->find_button, SIGNAL(pressed()), this, SLOT(open_note()));
 }
 
 Video_modif::~Video_modif()
@@ -36,4 +37,9 @@ void Video_modif::delete_note() {
     NM::NotesManager::getInstance().deleteNote(note);
     NM::NotesManager::getInstance().saveWorkspace();
     this->hide();
+}
+
+void Video_modif::open_note() {
+     ui->url_line->setText(QFileDialog::getOpenFileName(this,
+         tr("Open Video"), "/home/~", tr("Audio Files (*.avi *.wmv *.webm)")));
 }

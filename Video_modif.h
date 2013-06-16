@@ -33,6 +33,7 @@ private slots :
     */
     void save_note();
     void delete_note();
+    void open_note();
 
 private:
     NM::NVideo *note;
