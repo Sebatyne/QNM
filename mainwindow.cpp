@@ -117,15 +117,18 @@ void MainWindow::createListTags() {
 }
 
 void MainWindow::createFiltre() {
+    connect(this->sender(), SIGNAL(stateChanged(int)), this, SLOT(createFiltre()));
+
     filtre.clear();
     QLayoutItem *child;
-    QLayout *lay(ui->list_Tags->layout());
 
-    while( (child = lay->takeAt(0) ) )  {
+    int i=0;
+
+    while((child = ui->list_Tags->layout()->takeAt(i)) != 0) {
         QCheckBox *ch = dynamic_cast<QCheckBox*>(child->widget());
         if (ch->isChecked())
             filtre << NM::TagManager::getInstance()->addTag(ch->text());
-        delete child;
+        i++;
      }
 
     createListNotes();
