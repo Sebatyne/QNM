@@ -155,6 +155,8 @@ namespace NM
 
         QSet<const Tag*>getLinkedTags(const Note * N) const;
 
+        bool isLinked(QString label, Note * N);
+
         Iterator getIterator(){return Iterator(this->hash);}
     };
 }

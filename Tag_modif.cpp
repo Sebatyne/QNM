@@ -11,6 +11,7 @@ Tag_modif::Tag_modif(NM::Note *n, QWidget *parent) :
     create_listTags();
 
     connect(ui->button_addTag, SIGNAL(pressed()), this, SLOT(create_tag()));
+    connect(ui->save_button, SIGNAL(pressed()), this, SLOT(saveAndQuit()));
 }
 
 Tag_modif::~Tag_modif()
@@ -36,7 +37,8 @@ void Tag_modif::create_listTags() {
     while (it.hasNext()) {
         it.next();
         QCheckBox *cb = new QCheckBox(it.getTagLabel());
-        connect(cb, SIGNAL(stateChanged(int)), this, SLOT(update_tag()));
+        if (NM::TagManager::getInstance()->isLinked(it.getTagLabel(), note))
+            cb->setChecked(true);
         ui->group_tags->layout()->addWidget(cb);
     }
 }
@@ -49,6 +51,17 @@ void Tag_modif::create_tag() {
     create_listTags();
 }
 
-void Tag_modif::update_tag() {
+void Tag_modif::saveAndQuit() {
+    NM::TagManager *tm = NM::TagManager::getInstance();
+    QLayoutItem *child;
+    while( (child = ui->group_tags->layout()->takeAt(0)) )  {
+        QCheckBox *ch = dynamic_cast<QCheckBox*>(child->widget());
+        if (ch->isChecked()) {
+            tm->addLink(ch->text(), note);
+        } else {
+            tm->removeLink(ch->text(), note);
+        }
+    }
 
+    this->close();
 }

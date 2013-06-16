@@ -21,8 +21,8 @@ public:
     ~Tag_modif();
     
 private slots :
-    void update_tag();
     void create_tag();
+    void saveAndQuit();
 
 private:
     NM::Note *note;

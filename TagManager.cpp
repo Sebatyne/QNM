@@ -156,4 +156,9 @@ namespace NM
         }
         return linkedTags;
     }
+
+    bool TagManager::isLinked(QString label, Note * N) {
+        QSet<const Note*> setnote = Filter(label);
+        return setnote.contains(N);
+    }
 }
