@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionText->setIcon(QIcon(QPixmap(QString(":/icons/text.png"))));
 
     createListNotes();
+    createListTags();
     ui->tree->setCurrentRow(0);
 
     connect(ui->actionNewArticle,SIGNAL(triggered()), this, SLOT(dialogNewArticle()));
@@ -67,8 +68,16 @@ void MainWindow::saveWork() {
 void MainWindow::createListNotes() {
     ui->tree->clear();
 
+    QSet<const NM::Note*> toPrint;
+
     for(NM::NotesManager::Iterator i = NM::NotesManager::getInstance().begin();
-            i != NM::NotesManager::getInstance().end(); i++) {
+            i != NM::NotesManager::getInstance().end(); i++)
+        toPrint.insert(*i);
+
+    if (!filtre.empty())
+        toPrint = toPrint.intersect(NM::TagManager::getInstance()->Filter(filtre));
+
+    for(QSet<const NM::Note*>::iterator i = toPrint.begin(); i != toPrint.end(); i++) {
         QNMListWidgetItem *n = new QNMListWidgetItem((*i)->getTitle(), ui->tree);
         n->setId((*i)->getId());
 
@@ -83,6 +92,43 @@ void MainWindow::createListNotes() {
         else
             n->setIcon(QIcon(QPixmap(QString(":/icons/note.png"))));
     }
+}
+
+void MainWindow::createListTags() {
+    if(ui->list_Tags->layout()) {
+        QLayoutItem *child;
+        while( (child = ui->list_Tags->layout()->takeAt(0)) )  {
+            ui->list_Tags->layout()->removeItem( child );
+            delete child->widget();
+            delete child;
+         }
+    } else {
+        QVBoxLayout *lay = new QVBoxLayout();
+        ui->list_Tags->setLayout(lay);
+    }
+
+    NM::TagManager::Iterator it = NM::TagManager::getInstance()->getIterator();
+    while (it.hasNext()) {
+        it.next();
+        QCheckBox *cb = new QCheckBox(it.getTagLabel());
+        connect(cb, SIGNAL(stateChanged(int)), this, SLOT(createFiltre()));
+        ui->list_Tags->layout()->addWidget(cb);
+    }
+}
+
+void MainWindow::createFiltre() {
+    filtre.clear();
+    QLayoutItem *child;
+    QLayout *lay(ui->list_Tags->layout());
+
+    while( (child = lay->takeAt(0) ) )  {
+        QCheckBox *ch = dynamic_cast<QCheckBox*>(child->widget());
+        if (ch->isChecked())
+            filtre << NM::TagManager::getInstance()->addTag(ch->text());
+        delete child;
+     }
+
+    createListNotes();
 }
 
 QString MainWindow::dialogNewNote() {

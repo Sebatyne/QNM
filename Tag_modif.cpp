@@ -12,11 +12,13 @@ Tag_modif::Tag_modif(NM::Note *n, QWidget *parent) :
 
     connect(ui->button_addTag, SIGNAL(pressed()), this, SLOT(create_tag()));
     connect(ui->save_button, SIGNAL(pressed()), this, SLOT(saveAndQuit()));
+    connect(ui->save_button, SIGNAL(pressed()), MainWindow::getInstance(), SLOT(createListTags()));
 }
 
 Tag_modif::~Tag_modif()
 {
     delete ui;
+    MainWindow::getInstance()->createListTags();
 }
 
 void Tag_modif::create_listTags() {

@@ -31,25 +31,19 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QGroupBox" name="groupBox_Tags">
+        <widget class="QGroupBox" name="list_Tags">
          <property name="autoFillBackground">
           <bool>false</bool>
          </property>
          <property name="title">
           <string>Tags</string>
          </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
         </widget>
        </item>
        <item>
         <widget class="QListWidget" name="tree">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>

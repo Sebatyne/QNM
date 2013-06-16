@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QTreeWidget>
 #include <QList>
+#include <QSet>
 #include <QListWidgetItem>
 #include <QStringList>
-#include <QList>
 #include <QString>
 #include <QStandardItemModel>
 #include <QStandardItem>
@@ -15,6 +15,9 @@
 #include <QWidget>
 #include <QTextEdit>
 #include <QtWebKit/QWebView>
+#include <QCheckBox>
+#include "TagManager.h"
+#include "Tag.h"
 #include "NotesManager.h"
 #include "QNMListWidgetItem.h"
 #include "Article_modif.h"
@@ -134,6 +137,13 @@ public slots :
      * \brief Met à jour l'affichage de la liste des notes du workspace
     */
     void createListNotes();
+
+    /**
+     * \brief Met à jour l'affichage de la liste des tags du workspace
+    */
+    void createListTags();
+
+    void createFiltre();
     
 private:
     Ui::MainWindow *ui;
@@ -143,6 +153,8 @@ private:
     static MainWindow *mw;
 
     explicit MainWindow(QWidget *parent = 0);
+
+    QSet<const NM::Tag*> filtre;
 };
 
 
