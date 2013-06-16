@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     Corbeille_modif.cpp \
     TagManager.cpp \
     Tag.cpp \
-    Show_source.cpp
+    Show_source.cpp \
+    Tag_modif.cpp
 
 HEADERS  += mainwindow.h \
     NotesManager.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     Corbeille_modif.h \
     TagManager.h \
     Tag.h \
-    Show_source.h
+    Show_source.h \
+    Tag_modif.h
 
 FORMS    += mainwindow.ui \
     Article_modif.ui \
@@ -54,7 +56,8 @@ FORMS    += mainwindow.ui \
     Audio_modif.ui \
     Video_modif.ui \
     Corbeille_modif.ui \
-    Show_source.ui
+    Show_source.ui \
+    Tag_modif.ui
 
 RESOURCES += \
     icons/icons.qrc

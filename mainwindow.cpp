@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionHTML, SIGNAL(triggered()), this, SLOT(popup_export_HTML()));
     connect(ui->actionTeX, SIGNAL(triggered()), this, SLOT(popup_export_TeX()));
     connect(ui->actionText, SIGNAL(triggered()), this, SLOT(popup_export_text()));
+    connect(ui->actionTag, SIGNAL(triggered()), this, SLOT(showTagManager()));
 }
 
 MainWindow::~MainWindow()
@@ -252,6 +253,16 @@ void MainWindow::viewText(QListWidgetItem *wi) {
 void MainWindow::showCorbeille() {
     Corbeille_modif *cm = new Corbeille_modif(this);
     cm->show();
+}
+
+void MainWindow::showTagManager() {
+    if (ui->tree->currentRow() == -1)
+        return;
+
+    NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
+
+    Tag_modif *tm = new Tag_modif(n);
+    tm->show();
 }
 
 void MainWindow::showExport(int nbTab) {

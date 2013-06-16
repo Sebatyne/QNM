@@ -18,9 +18,9 @@ int main(int argc, char *argv[]) {
     
     MainWindow *w = MainWindow::getInstance();
 
-    //TagManager::getInstance()->addTag("tag1");
-    //TagManager::getInstance()->addTag("tag2");
-    //TagManager::getInstance()->addTag("tag3");
+    TagManager::getInstance()->addTag("tag1");
+    TagManager::getInstance()->addTag("tag2");
+    TagManager::getInstance()->addTag("tag3");
 
     //nm.saveWorkspace();
 

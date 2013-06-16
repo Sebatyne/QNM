@@ -23,6 +23,7 @@
 #include "Audio_modif.h"
 #include "Video_modif.h"
 #include "Corbeille_modif.h"
+#include "Tag_modif.h"
 #include "Show_source.h"
 
 namespace Ui {
@@ -107,6 +108,10 @@ private slots :
      * \brief lance la popup de la corbeille
     */
     void showCorbeille();
+    /**
+     * \brief lance la popup du gestionnaire de tags
+    */
+    void showTagManager();
     /**
      * \brief Affiche l'export de la note actuellement sélectionnée
      *Fonction appelée lors de l'appui sur l'un des onglets de la zone d'affichage

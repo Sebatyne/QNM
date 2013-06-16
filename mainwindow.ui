@@ -201,7 +201,7 @@
     <string>Quitter</string>
    </property>
   </action>
-  <action name="actionNewTag">
+  <action name="actionTag">
    <property name="icon">
     <iconset resource="icons/icons.qrc">
      <normaloff>:/icons/tag.png</normaloff>:/icons/tag.png</iconset>
@@ -210,7 +210,7 @@
     <string>Tag</string>
    </property>
    <property name="toolTip">
-    <string>Créer un nouveau tag</string>
+    <string>Affiche le Gestionnaire de Tags</string>
    </property>
   </action>
   <action name="actionNewImage">
@@ -281,18 +281,6 @@
    </property>
    <property name="text">
     <string>Corbeille</string>
-   </property>
-  </action>
-  <action name="actionTag">
-   <property name="icon">
-    <iconset resource="icons/icons.qrc">
-     <normaloff>:/icons/tag.png</normaloff>:/icons/tag.png</iconset>
-   </property>
-   <property name="text">
-    <string>Tag Manager</string>
-   </property>
-   <property name="toolTip">
-    <string>Ouvre le Tag Manager</string>
    </property>
   </action>
  </widget>

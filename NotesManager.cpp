@@ -238,11 +238,9 @@ namespace NM {
         }
 
         //ajout des tag au DOM
-        TagManager::Iterator it = TagManager::getInstance()->getIterator();
+        /*TagManager::Iterator it = TagManager::getInstance()->getIterator();
 
         while (it.hasNext()) {
-
-
             QDomElement node = doc.createElement("tag");
             root.appendChild(node);
 
@@ -260,7 +258,7 @@ namespace NM {
             }
 
             it.next();
-        }
+        }*/
 
         //enregistrement de l'architecture sur le disque
         QFile fd(workspace.path() + "/" + workspace.dirName());
