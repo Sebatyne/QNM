@@ -23,6 +23,7 @@
 #include "Audio_modif.h"
 #include "Video_modif.h"
 #include "Corbeille_modif.h"
+#include "Show_source.h"
 
 namespace Ui {
 class MainWindow;
@@ -99,6 +100,10 @@ private slots :
     */
     void viewTeX(QListWidgetItem *wi);
     /**
+     * \brief Affiche l'export texte correspondant à la note que l'utilisateur veut éditer
+    */
+    void viewText(QListWidgetItem *wi);
+    /**
      * \brief lance la popup de la corbeille
     */
     void showCorbeille();
@@ -107,7 +112,18 @@ private slots :
      *Fonction appelée lors de l'appui sur l'un des onglets de la zone d'affichage
      */
     void showExport(int nbTab);
-
+    /**
+     * \brief affiche une popup lors d'un export HTML affichant le texte de la source
+     */
+    void popup_export_HTML();
+    /**
+     * \brief affiche une popup lors d'un export TeX affichant le texte de la source
+     */
+    void popup_export_TeX();
+    /**
+     * \brief affiche une popup lors d'un export texte affichant le texte de la source
+     */
+    void popup_export_text();
 public slots :
     /**
      * \brief Met à jour l'affichage de la liste des notes du workspace

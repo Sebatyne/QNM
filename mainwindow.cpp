@@ -44,6 +44,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //affichage des exports
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(showExport(int)));
+
+    //Actions
+    connect(ui->actionHTML, SIGNAL(triggered()), this, SLOT(popup_export_HTML()));
+    connect(ui->actionTeX, SIGNAL(triggered()), this, SLOT(popup_export_TeX()));
+    connect(ui->actionText, SIGNAL(triggered()), this, SLOT(popup_export_text()));
 }
 
 MainWindow::~MainWindow()
@@ -216,7 +221,30 @@ void MainWindow::viewTeX(QListWidgetItem *wi) {
     NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
     NM::LaTexNotesExporter * exporter = new NM::LaTexNotesExporter(n);
     QTextEdit *te = new QTextEdit();
+    te->setReadOnly(true);
     ui->tab_TeX->layout()->addWidget(te);
+    te->setText(exporter->getRawExport());
+}
+
+void MainWindow::viewText(QListWidgetItem *wi) {
+    ui->tabWidget->setCurrentIndex(3);
+    if (ui->tab_text->layout()) {
+        QLayoutItem *child;
+        while( (child = ui->tab_text->layout()->takeAt(0)) )  {
+            ui->tab_text->layout()->removeItem( child );
+            delete child->widget();
+            delete child;
+         }
+    } else {
+        QVBoxLayout *lay = new QVBoxLayout();
+        ui->tab_text->setLayout(lay);
+    }
+
+    NM::Note *n = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(wi)->getId());
+    NM::textNotesExporter * exporter = new NM::textNotesExporter(n);
+    QTextEdit *te = new QTextEdit();
+    te->setReadOnly(true);
+    ui->tab_text->layout()->addWidget(te);
     te->setText(exporter->getRawExport());
 }
 
@@ -226,6 +254,16 @@ void MainWindow::showCorbeille() {
 }
 
 void MainWindow::showExport(int nbTab) {
+    if (nbTab != 1)
+        if (ui->tab_html->layout()) {
+            QLayoutItem *child;
+            while( (child = ui->tab_html->layout()->takeAt(0)) )  {
+                ui->tab_html->layout()->removeItem( child );
+                delete child->widget();
+                delete child;
+             }
+        }
+
     switch (nbTab) {
         case 0 :
             viewItem(ui->tree->currentItem());
@@ -238,5 +276,48 @@ void MainWindow::showExport(int nbTab) {
         case 2 :
             viewTeX(ui->tree->currentItem());
             break;
+
+        case 3 :
+            viewText(ui->tree->currentItem());
+            break;
     }
+}
+
+void MainWindow::popup_export_HTML() {
+    if (ui->tabWidget->currentIndex() == -1)
+        return;
+
+    NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
+    NM::HTMLNotesExporter *exporter = new NM::HTMLNotesExporter(note);
+
+    qDebug() <<exporter->getRawExport();
+
+    Show_source *sour = new Show_source(exporter->getRawExport(), this);
+    sour->exec();
+}
+
+void MainWindow::popup_export_TeX() {
+    if (ui->tabWidget->currentIndex() == -1)
+        return;
+
+    NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
+    NM::LaTexNotesExporter *exporter = new NM::LaTexNotesExporter(note);
+
+    qDebug() <<exporter->getRawExport();
+
+    Show_source *sour = new Show_source(exporter->getRawExport(), this);
+    sour->exec();
+}
+
+void MainWindow::popup_export_text() {
+    if (ui->tabWidget->currentIndex() == -1)
+        return;
+
+    NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
+    NM::textNotesExporter *exporter = new NM::textNotesExporter(note);
+
+    qDebug() <<exporter->getRawExport();
+
+    Show_source *sour = new Show_source(exporter->getRawExport(), this);
+    sour->exec();
 }
