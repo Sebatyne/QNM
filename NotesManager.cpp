@@ -100,7 +100,8 @@ namespace NM {
             //parcours des noeuds
             while (!n.isNull()) {
                 //on teste si note
-                createNoteFromNode(n);
+                if (n.toElement().text() != "note")
+                    createNoteFromNode(n);
                 n = n.nextSibling();
             }
     }
@@ -237,7 +238,29 @@ namespace NM {
         }
 
         //ajout des tag au DOM
+        TagManager::Iterator it = TagManager::getInstance()->getIterator();
 
+        while (it.hasNext()) {
+
+
+            QDomElement node = doc.createElement("tag");
+            root.appendChild(node);
+
+            QDomElement tag = doc.createElement("name");
+            node.appendChild(tag);
+            QDomText t = doc.createTextNode(it.getTagLabel());
+            tag.appendChild(t);
+
+
+            QSet<const Note*> setnotes = TagManager::getInstance()->Filter(it.getTagLabel());
+            for (QSet<const Note*>::iterator it2 = setnotes.begin(); it2 != setnotes.end(); it2++) {
+                tag = doc.createElement("links");
+                node.appendChild(tag);
+                t = doc.createTextNode(QString::number((*it2)->getId()));
+            }
+
+            it.next();
+        }
 
         //enregistrement de l'architecture sur le disque
         QFile fd(workspace.path() + "/" + workspace.dirName());

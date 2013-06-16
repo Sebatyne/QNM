@@ -12,6 +12,7 @@ namespace NM
     }
 
     const Tag * TagManager::addTag(const Tag * T){
+        NM::NotesManager::getInstance().saveWorkspace();
         if(!hash.contains(T)){
             QString label = T->getLabel();
 
@@ -28,6 +29,7 @@ namespace NM
     }
 
     const Tag * TagManager::addTag(const QString & label){
+        NM::NotesManager::getInstance().saveWorkspace();
         QHashIterator<const Tag*, QSet<const Note*> > it(hash);
         while(it.hasNext()){
             it.next();
@@ -50,10 +52,12 @@ namespace NM
     }
 
     void TagManager::removeTag(const Tag * T){
+        NM::NotesManager::getInstance().saveWorkspace();
         hash.remove(T);
     }
 
     void TagManager::removeTag(const QString & label){
+        NM::NotesManager::getInstance().saveWorkspace();
         QHashIterator<const Tag*, QSet<const Note*> > it(hash);
 
         bool found = false;
@@ -72,12 +76,14 @@ namespace NM
     }
 
     void TagManager::addLink(const Tag * T, const Note * N){
+        NM::NotesManager::getInstance().saveWorkspace();
         if(!hash[T].contains(N)){
             hash[T].insert(N);
         }
     }
 
     void TagManager::addLink(const QString & label, const Note * N){
+        NM::NotesManager::getInstance().saveWorkspace();
         this->addLink(this->addTag(label), N);
     }
 
@@ -88,6 +94,7 @@ namespace NM
     }
 
     void TagManager::removeLink(const QString & label, const Note * N){
+        NM::NotesManager::getInstance().saveWorkspace();
         const Tag * T = this->find(label);
         if(T){
             hash[T].remove(N);
@@ -129,6 +136,12 @@ namespace NM
             requestedTags.insert(foundTag);
         }
         return this->Filter(requestedTags);
+    }
+
+    QSet<const Note*> TagManager::Filter(QString requestedTag) {
+        QSet<QString> set;
+        set << requestedTag;
+        return Filter(set);
     }
 
     QSet<const Tag*> TagManager::getLinkedTags(const Note * N) const{

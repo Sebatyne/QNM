@@ -16,7 +16,7 @@ namespace NM
      */
     class TagManager
     {
-
+    public :
         class Iterator{
         friend class TagManager;
             QHashIterator<const Tag*, QSet<const Note*> > hashIt;
@@ -30,6 +30,9 @@ namespace NM
             Iterator next(){hashIt.next(); return *this;}
             Iterator previous(){hashIt.previous(); return *this;}
         };
+
+
+    private :
 
         static TagManager * Instance;
 
@@ -138,10 +141,18 @@ namespace NM
         QSet<const Note*>Filter(QSet<QString> requestedTags);
 
         /**
+         * \brief Retrouve l'ensemble de notes ayant un lien avec un Tag
+         * \param requestedTag : Label d'un Tag
+         * \return L'ensemble de notes liées à l'ensemble des tags passé en paramètre
+         */
+        QSet<const Note*>Filter(QString requestedTag);
+
+        /**
          * \brief Retrouve les tags associés à une note
          * \param N : Note
          * \return L'ensemble des tags associés à la note
          */
+
         QSet<const Tag*>getLinkedTags(const Note * N) const;
 
         Iterator getIterator(){return Iterator(this->hash);}
