@@ -11,6 +11,10 @@ namespace Ui {
 class Corbeille_modif;
 }
 
+/**
+ * \class Corbeille_modif
+ * \brief Dialog affichant la liste des notes supprimées et pouvant être restaurées
+ */
 class Corbeille_modif : public QDialog
 {
     Q_OBJECT

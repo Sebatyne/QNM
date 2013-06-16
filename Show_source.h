@@ -8,6 +8,10 @@ namespace Ui {
 class Show_source;
 }
 
+/**
+ * \class Show_source
+ * \brief Dialog affichant la source d'une note suite à un export
+ */
 class Show_source : public QDialog
 {
     Q_OBJECT

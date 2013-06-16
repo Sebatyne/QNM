@@ -290,8 +290,6 @@ void MainWindow::popup_export_HTML() {
     NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
     NM::HTMLNotesExporter *exporter = new NM::HTMLNotesExporter(note);
 
-    qDebug() <<exporter->getRawExport();
-
     Show_source *sour = new Show_source(exporter->getRawExport(), this);
     sour->exec();
 }
@@ -303,8 +301,6 @@ void MainWindow::popup_export_TeX() {
     NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
     NM::LaTexNotesExporter *exporter = new NM::LaTexNotesExporter(note);
 
-    qDebug() <<exporter->getRawExport();
-
     Show_source *sour = new Show_source(exporter->getRawExport(), this);
     sour->exec();
 }
@@ -315,8 +311,6 @@ void MainWindow::popup_export_text() {
 
     NM::Note *note = NM::NotesManager::getInstance().getNote(dynamic_cast<QNMListWidgetItem*>(ui->tree->currentItem())->getId());
     NM::textNotesExporter *exporter = new NM::textNotesExporter(note);
-
-    qDebug() <<exporter->getRawExport();
 
     Show_source *sour = new Show_source(exporter->getRawExport(), this);
     sour->exec();
