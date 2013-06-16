@@ -215,6 +215,7 @@ namespace NM {
         qDebug() << workspace.dirName();
         doc.appendChild(root);
 
+        //ajout des notes au DOM
         for (Iterator it = begin(); it != end(); it++) {
             QDomElement node = doc.createElement("note");
             root.appendChild(node);
@@ -235,6 +236,10 @@ namespace NM {
             tag.appendChild(t);
         }
 
+        //ajout des tag au DOM
+
+
+        //enregistrement de l'architecture sur le disque
         QFile fd(workspace.path() + "/" + workspace.dirName());
         fd.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
 

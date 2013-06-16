@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionText->setIcon(QIcon(QPixmap(QString(":/icons/text.png"))));
 
     createListNotes();
+    ui->tree->setCurrentRow(0);
 
     connect(ui->actionNewArticle,SIGNAL(triggered()), this, SLOT(dialogNewArticle()));
     connect(ui->actionNewDocument,SIGNAL(triggered()), this, SLOT(dialogNewDocument()));

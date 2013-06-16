@@ -14,6 +14,8 @@
 #include "Note.h"
 #include "NoteFactory.h"
 #include "NotesExporter.h"
+#include "TagManager.h"
+#include "Tag.h"
 
 namespace NM {
     class Note;
