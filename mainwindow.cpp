@@ -193,7 +193,7 @@ void MainWindow::viewHTML(QListWidgetItem *wi) {
     QWebView *wv = new QWebView();
     ui->tab_html->layout()->addWidget(wv);
     qDebug() << "le HTML : " << exporter->getRawExport();
-    //wv->setHtml(exporter->getRawExport(), QUrl(QString("/")));
+    wv->setHtml(exporter->getRawExport(), QUrl(QString("/")));
 }
 
 void MainWindow::showCorbeille() {
