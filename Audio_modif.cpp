@@ -9,6 +9,8 @@ Audio_modif::Audio_modif(NM::Note *n, QWidget *parent) :
     ui->setupUi(this);
     note->load();
     ui->title_note->setText(note->getTitle());
+    ui->url_line->selectAll();
+    ui->url_line->clear();
     ui->url_line->setText(note->getUrl());
     ui->description_line->clear();
     ui->description_line->setText(note->getDescription().trimmed());

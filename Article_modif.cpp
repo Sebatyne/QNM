@@ -8,6 +8,8 @@ Article_modif::Article_modif(NM::Note *n, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->text_note->setAcceptRichText(false);
+
     note->load();
     ui->title_note->setText(note->getTitle());
     ui->text_note->setText(note->getText());
